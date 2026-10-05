@@ -5,7 +5,7 @@
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a class="active" href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
-</nav></div></div></header>
+</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a></div></div></header>
 <main class="page"><section class="hero-surface"><div class="hero-content"><p class="eyebrow">About SDK-Dev</p><h1 class="page-title">Jaringan, software, dan sistem yang dibuat untuk bekerja.</h1><p class="page-subtitle">SDK-Dev menggabungkan network engineering, MikroTik, backend, web, dan integrasi sistem untuk kebutuhan operasional sehari-hari.</p></div>
 <div class="hero-actions"><a class="btn btn-primary" href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Hubungi kami</span></a><a class="btn btn-secondary" href="paket.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Lihat paket hotspot</span></a></div>
 <div class="hero-metrics"><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-network"></use></svg><span>Core</span></div><strong>Network Engineering</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-code"></use></svg><span>Platform</span></div><strong>Web & Backend</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-integration"></use></svg><span>Integration</span></div><strong>API & Automation</strong></div></div></section>
@@ -21,4 +21,17 @@
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>
 <a class="active" href="about.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
-</nav><footer class="site-footer">SDK-Dev Hotspot</footer></body></html>
+</nav><button class="chat-launcher" type="button" onclick="toggleChat()"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Chat</span></button>
+<section id="chat-panel" class="chat-panel hidden" aria-label="Live chat">
+  <div class="chat-header">
+    <div class="chat-title"><span class="heading-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg></span><div><strong>Live Chat</strong><span>Hubungi admin langsung</span></div></div>
+    <button class="chat-close" type="button" onclick="toggleChat()" aria-label="Tutup chat"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-close"></use></svg></button>
+  </div>
+  <div id="chat-status" class="chat-status">Belum terhubung</div>
+  <div id="chat-messages" class="chat-messages"><div class="chat-empty">Buka chat jika butuh bantuan login, voucher, paket, atau koneksi.</div></div>
+  <div class="chat-compose">
+    <input id="chat-name" autocomplete="name" placeholder="Nama Anda">
+    <textarea id="chat-message" rows="3" placeholder="Tulis pesan…"></textarea>
+    <button id="chat-send" class="btn btn-primary" type="button"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Kirim pesan</span></button>
+  </div>
+</section><footer class="site-footer">SDK-Dev Hotspot</footer><input type="hidden" id="mac-addr" value="$(mac)"><script src="scripts/common.js"></script></body></html>
