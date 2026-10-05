@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SDK-Dev Hotspot</title>
+
+  <link href="./styles/output.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+
+  <style>
+    .animate-fade {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #autoMode:checked + div .dot {
+      transform: translateX(100%);
+      background-color: #06b6d4; /* cyan-500 */
+    }
+  </style>
+</head>
+
+<body class="bg-gray-950 text-gray-100 font-sans transition-all duration-300 ease-in-out flex flex-col min-h-screen">
+
+  <!-- HEADER -->
+  <header class="bg-gray-900 shadow-lg p-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-cyan-300 to-cyan-400">
+        🌐 SDK-Dev
+      </h1>
+      <button id="coin-display" class="sm:inline-block bg-yellow-500 text-gray-900 font-semibold sm:text-xs text-[9px] px-3 py-1 rounded-full shadow-md animate-fade hover:shadow-yellow-400/50 transition duration-300">
+        💰 Coin: 0
+      </button>
+    </div>
+    $(if logged-in == 'yes')<span class="text-sm text-gray-400 hidden sm:inline">Terhubung sebagai <strong id="username">$(username)</strong></span>$(endif)
+    <button onclick="toggleSidebar()" class="md:hidden text-gray-400 focus:outline-none">☰</button>
+  </header>
+
+  <!-- CONTENT WRAPPER -->
+  <div class="flex flex-col md:flex-row flex-1">
+    <!-- SIDEBAR -->
+    <nav id="sidebar" class="bg-gray-800 w-full md:w-64 p-4 space-y-4 hidden md:block">
+      $(if logged-in != 'yes')
+      <button onclick="document.location='/login'" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">🔐 Login</button>
+      <button type="button" onclick="startQrScan()" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">📷 Scan QR</button>
+      $(endif)
+      $(if logged-in == 'yes')
+      <button onclick="loadPage('dashboard.html')" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">🏠 Dashboard</button>
+      <button onclick="loadPage('profile.html')" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">👤 Profile</button>
+      <button onclick="loadPage('usage.html')" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">📊 Penggunaan</button>
+      $(endif)
+      <button onclick="window.location = 'http://mbingsdk.net:5000/login?mac=$(mac)';" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">💲 Mikcoins</button>
+      <button onclick="loadPage('paket.html')" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">📦 Daftar Paket</button>
+      <button onclick="loadPage('about.html')" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">ℹ️ Tentang</button>
+      <button onclick="loadPage('contact.html')" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">📞 Contact Person</button>
+
+      <!-- Logout -->
+    $(if logged-in == 'yes')
+      <a href="$(link-logout)" class="block w-full text-left px-4 py-2 rounded hover:bg-gray-700 text-red-400">🚪 Logout</a>
+    $(endif)
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content" class="flex-1 p-4 md:p-6 bg-gray-900 overflow-auto animate-fade">
+      $(if logged-in != 'yes')
+      <!-- Login Page -->
+      <div class="flex justify-center items-center p-4 min-h-[calc(100vh-80px-80px)]">
+        <!-- Login box -->
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md animate-fade hover:shadow-cyan-500/20 transition duration-500">
+          <h2 class="text-3xl font-bold mb-6 text-center text-cyan-400">🔐 Login Hotspot</h2>
+
+          <!-- Error Display -->
+          <div class="text-center text-red-400 text-sm mb-4">$(if error)$(error)$(endif)</div>
+
+          <!-- FORM LOGIN -->
+          <form name="login" method="post" action="$(link-login-only)" class="space-y-6" $(if chap-id) onSubmit="return doLogin()" $(endif)>
+            <input type="hidden" name="dst" value="status.html" />
+            <input type="hidden" name="popup" value="true" />
+            <div id="qr-reader" class="mt-4 hidden rounded-lg overflow-hidden border border-gray-700"></div>
+
+            <!-- Username -->
+            <div>
+              <input name="username" id="username" value="$(username)" class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Username" required />
+            </div>
+
+            <!-- Password -->
+            <div>
+              <input name="password" id="password" type="password" class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Password" required />
+            </div>
+
+            <!-- Switch for Auto-Mode -->
+            <div class="flex items-center justify-between text-sm text-gray-300">
+              <label id="autoModeLabel" for="autoMode" class="flex items-center gap-2 cursor-pointer">
+                <input onchange="togleSwitch()" type="checkbox" id="autoMode" class="sr-only" />
+                <div class="w-10 h-5 bg-gray-600 rounded-full relative transition">
+                  <div class="dot absolute left-0 top-0 w-5 h-5 bg-white rounded-full transition-transform transform"></div>
+                </div>
+                Mode Single Field
+              </label>
+            </div>
+
+          <!-- Tombol Login + Scan QR -->
+          <div class="flex gap-2">
+            <input id="btnLog" type="submit" value="Login" class="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white p-3 rounded-lg cursor-pointer transition-all duration-300" />
+            <button id="btnQR" type="button" onclick="startQRScanner()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg transition-all duration-300">
+              🔍 Scan QR
+            </button>
+          </div>
+
+          </form>
+        </div>
+      </div>
+      $(endif)
+    </main>
+  </div>
+
+  <!-- LIVE CHAT START -->
+<!-- Chat Floating Button -->
+<div class="fixed bottom-4 right-4 z-50">
+  <input type="hidden" id="mac-addr" value="$(mac)" />
+  <button onclick="toggleChat()" class="bg-cyan-500 hover:bg-cyan-600 text-white p-3 rounded-full shadow-lg transition-all">
+    💬 Chat
+  </button>
+</div>
+
+<!-- Chat Box -->
+<div id="chat-container" class="fixed bottom-20 right-4 w-80 bg-gray-800 rounded-lg shadow-xl hidden z-40">
+  <div class="p-3 border-b border-gray-700 flex justify-between items-center">
+    <span class="text-cyan-400 font-semibold">Live Chat</span>
+    <button onclick="toggleChat()" class="text-gray-400 hover:text-white">✖</button>
+  </div>
+  <div id="chat-box" class="p-3 space-y-2 max-h-60 overflow-y-auto text-sm"></div>
+  <div class="p-3 border-t border-gray-700">
+    <input id="chat-name" placeholder="Nama Anda" class="w-full mb-2 p-2 rounded bg-gray-700 text-white text-sm" />
+    <textarea id="chat-message" placeholder="Ketik pesan..." rows="3" class="w-full p-2 rounded bg-gray-700 text-white text-sm resize-none"></textarea>
+    <button onclick="sendMessage()" class="w-full mt-2 bg-cyan-600 hover:bg-cyan-700 p-2 rounded text-white text-sm">Kirim</button>
+  </div>
+</div>
+  <!-- LIVE CHAT END -->
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-center text-sm py-4 text-gray-600">
+    &copy; <script>document.write(new Date().getFullYear());</script> | SDK-Dev Hotspot.
+  </footer>
+
+  $(if chap-id)
+  <form name="sendin" action="$(link-login-only)" method="post">
+    <input type="hidden" name="username" />
+    <input type="hidden" name="password" />
+    <input type="hidden" name="dst" value="status.html" />
+    <input type="hidden" name="popup" value="true" />
+  </form>
+
+  <script>
+    function doLogin() {
+      document.sendin.username.value = document.login.username.value;
+      document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value + '$(chap-challenge)');
+      document.sendin.submit();
+      return false;
+    }
+  </script>
+  $(endif)
+
+  <script>
+    const currentUrl = window.location.href;
+    console.log("URL saat ini:", currentUrl);
+  </script>
+  <script src="scripts/config.js"></script>
+  <script src="scripts/chat.js"></script>
+  $(if logged-in != 'yes')<script src="scripts/login.js"></script>$(endif)
+  <script src="scripts/md5.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  $(if logged-in == 'yes')
+  <script>loadPage('dashboard.html');</script>
+  $(endif)
+
+  <!-- ALERT PEMBELIAN -->
+  <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 w-full max-w-sm text-center shadow-lg animate-fade relative">
+      <button onclick="document.getElementById('confirm-modal').classList.add('hidden')" class="absolute top-2 right-2 text-gray-400 hover:text-white transition">
+        ✖
+      </button>
+      <h3 id="confirm-title" class="text-lg font-semibold text-white mb-4">Konfirmasi</h3>
+      <p id="confirm-message" class="text-sm text-gray-300 mb-6">Apakah Anda yakin?</p>
+      <div class="flex justify-center gap-4">
+        <button id="confirm-no" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition">Batal</button>
+        <button id="confirm-yes" class="px-4 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600 transition">Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- TOAST STATUS TRANSAKSI -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg border border-gray-600 hidden z-50 transition-opacity duration-300"></div>
+
+  $(if mac)
+  <script>
+    getCoin('$(mac)');
+  </script>
+  $(endif)
+
+</body>
+</html>

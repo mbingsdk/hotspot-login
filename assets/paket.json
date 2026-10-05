@@ -1,0 +1,63 @@
+[
+    {
+      "nama": "Paket 1 Jam",
+      "durasi": "1 Jam",
+      "kecepatan": "-",
+      "harga": 1000,
+      "profile": "1-Jam",
+      "limit-uptime": "1h",
+      "comment":"up-1 Jam by Mikcoins@SDK-Dev",
+      "coin": 3
+    },
+    {
+      "nama": "Paket 2 Jam",
+      "durasi": "2 Jam",
+      "kecepatan": "-",
+      "harga": 2000,
+      "profile": "2-Jam",
+      "limit-uptime": "2h",
+      "comment":"up-2 Jam by Mikcoins@SDK-Dev",
+      "coin": 6
+    },
+    {
+      "nama": "Paket 7 Jam",
+      "durasi": "7 Jam",
+      "kecepatan": "-",
+      "harga": 5000,
+      "profile": "7-Jam",
+      "limit-uptime": "7h",
+      "comment":"up-7 Jam by Mikcoins@SDK-Dev",
+      "coin": 15
+    },
+    {
+      "nama": "Paket Harian",
+      "durasi": "2 Hari",
+      "kecepatan": "-",
+      "harga": 10000,
+      "profile": "2-Hari",
+      "limit-uptime": "2d",
+      "comment":"up-2 Hari by Mikcoins@SDK-Dev",
+      "coin": 30
+    },
+    {
+      "nama": "Paket Mingguan",
+      "durasi": "7 Hari",
+      "kecepatan": "-",
+      "harga": 20000,
+      "profile": "1-Minggu",
+      "limit-uptime": "7d",
+      "comment":"up-1 Minggu by Mikcoins@SDK-Dev",
+      "coin": 60
+    },
+    {
+      "nama": "Paket Bulanan",
+      "durasi": "30 Hari",
+      "kecepatan": "-",
+      "harga": 75000,
+      "profile": "1-Bulan",
+      "limit-uptime": "30d",
+      "comment":"up-1 Bulan by Mikcoins@SDK-Dev",
+      "coin": 225
+    }
+  ]
+  

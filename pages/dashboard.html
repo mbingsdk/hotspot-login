@@ -1,0 +1,53 @@
+<div class="space-y-6 animate-fade">
+    <!-- Title -->
+    <h2 class="text-3xl font-semibold text-cyan-400 border-b border-gray-700 pb-4">🏠 Dashboard</h2>
+  
+    <!-- Info Message -->
+    <p class="text-sm text-gray-400">Selamat datang, <strong class="text-cyan-300">$(username)</strong>! Berikut informasi koneksi Anda:</p>
+  
+    <!-- Grid Info Layout -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Username</h4>
+        <p class="text-xl font-bold text-cyan-400">$(username)</p>
+      </div>
+
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">IP Address</h4>
+        <p class="text-xl font-bold text-cyan-400">$(ip)</p>
+      </div>
+  
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">MAC Address</h4>
+        <p class="text-xl font-bold text-cyan-400">$(mac)</p>
+      </div>
+  
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Data Masuk</h4>
+        <p class="text-xl font-bold text-cyan-400">$(bytes-out-nice)</p>
+      </div>
+
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Data Keluar</h4>
+        <p class="text-xl font-bold text-cyan-400">$(bytes-in-nice)</p>
+      </div>
+      $(if session-time-left)
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Uptime</h4>
+        <p class="text-xl font-bold text-cyan-400">$(uptime)</p>
+      </div>
+
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Sisa waktu</h4>
+        <p class="text-xl font-bold text-cyan-400">$(session-time-left)</p>
+      </div>
+      $(else)
+      <div class="animate-fade p-6 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300">
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Uptime</h4>
+        <p class="text-xl font-bold text-cyan-400">$(uptime)</p>
+      </div>
+      $(endif)
+    </div>
+  </div>
+  
