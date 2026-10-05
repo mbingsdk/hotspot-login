@@ -479,3 +479,77 @@ a{color:inherit}
   .login-benefit .feature-icon{grid-row:1/3;margin:0}
   .login-benefit span{display:block}
 }
+
+/* Simplified supporting iconography */
+.login-points{
+  margin-top:24px;
+  display:grid;
+  gap:12px;
+}
+.login-point{
+  display:grid;
+  grid-template-columns:20px minmax(0,1fr);
+  gap:10px;
+  align-items:start;
+}
+.login-point>.icon{
+  width:17px;
+  height:17px;
+  margin-top:2px;
+  color:var(--primary);
+}
+.login-point strong{
+  display:block;
+  color:#fff;
+  font-size:.8rem;
+}
+.login-point span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.7rem;
+  line-height:1.45;
+}
+.login-package-pill{
+  padding:7px 10px;
+  color:#CFE4EE;
+  background:rgba(39,142,165,.10);
+  border:1px solid rgba(39,142,165,.20);
+}
+.login-package-pill .icon{display:none}
+
+.faq-list{
+  display:grid;
+  gap:0;
+  border-top:1px solid rgba(39,142,165,.18);
+}
+.faq-item{
+  padding:14px 0;
+  border-bottom:1px solid rgba(39,142,165,.18);
+}
+.faq-item strong{
+  display:block;
+  color:#fff;
+  font-size:.8rem;
+  line-height:1.35;
+}
+.faq-item span{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:.72rem;
+  line-height:1.5;
+}
+
+/* Disable obsolete boxed-icon styling in simplified areas */
+.login-context .feature-icon,
+.faq-list .heading-icon{display:none}
+
+@media(max-width:900px){
+  .login-points{margin-top:18px}
+}
+@media(max-width:680px){
+  .login-points{gap:10px}
+  .login-point{grid-template-columns:18px minmax(0,1fr)}
+  .login-point span{font-size:.68rem}
+}
