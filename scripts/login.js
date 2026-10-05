@@ -1,60 +1,73 @@
 const username = document.getElementById("login-username");
 const password = document.getElementById("login-password");
 const passwordField = document.getElementById("password-field");
+const usernameField = document.getElementById("username-field");
 const autoMode = document.getElementById("autoMode");
+const runtimeNotice = document.getElementById("runtime-notice");
 
 const platformGuides = {
   android: {
     label: "Android",
     steps: [
-      "Buka Settings > Network & Internet > Internet / Wi-Fi.",
-      "Pilih jaringan Wi-Fi hotspot ini, lalu buka bagian Privacy / MAC address type.",
-      "Ubah dari Randomized MAC ke Device MAC / Phone MAC.",
-      "Putuskan lalu sambungkan ulang ke Wi-Fi hotspot ini."
+      "Buka pengaturan Wi-Fi untuk jaringan ini.",
+      "Cari Privacy / MAC address type.",
+      "Pilih Device MAC / Phone MAC.",
+      "Sambungkan ulang ke hotspot."
     ]
   },
   ios: {
     label: "iPhone / iPad",
     steps: [
       "Buka Settings > Wi-Fi.",
-      "Ketuk tombol info pada jaringan hotspot ini.",
-      "Buka Private Wi-Fi Address lalu pilih Off jika tersedia.",
-      "Sambungkan ulang ke jaringan hotspot ini."
+      "Ketuk info pada jaringan ini.",
+      "Ubah Private Wi-Fi Address ke Off.",
+      "Sambungkan ulang ke hotspot."
     ]
   },
   macos: {
     label: "macOS",
     steps: [
       "Buka System Settings > Wi-Fi.",
-      "Klik Details pada jaringan hotspot ini.",
-      "Pada Private Wi-Fi address, pilih Off jika tersedia.",
-      "Sambungkan ulang ke jaringan hotspot ini."
+      "Buka Details jaringan ini.",
+      "Ubah Private Wi-Fi address ke Off.",
+      "Sambungkan ulang ke hotspot."
     ]
   },
   windows: {
     label: "Windows",
     steps: [
       "Buka Settings > Network & internet > Wi-Fi.",
-      "Pilih jaringan hotspot ini atau buka Manage known networks.",
-      "Matikan Random hardware addresses untuk jaringan ini.",
-      "Putuskan lalu sambungkan ulang ke Wi-Fi hotspot ini."
+      "Buka properti jaringan hotspot.",
+      "Matikan Random hardware addresses.",
+      "Sambungkan ulang ke hotspot."
     ]
   },
   other: {
-    label: "Perangkat ini",
+    label: "Perangkat",
     steps: [
-      "Buka pengaturan Wi-Fi untuk jaringan hotspot ini.",
-      "Cari opsi Privacy, Private address, Randomized MAC, atau Random hardware address.",
-      "Gunakan Device MAC / Hardware MAC atau matikan alamat privat untuk SSID ini.",
-      "Sambungkan ulang ke Wi-Fi hotspot."
+      "Buka pengaturan Wi-Fi jaringan ini.",
+      "Cari Private address / Randomized MAC.",
+      "Gunakan Device MAC / Hardware MAC.",
+      "Sambungkan ulang ke hotspot."
     ]
   }
 };
 
+function showRuntimeNotice(message) {
+  if (!runtimeNotice) return;
+  runtimeNotice.textContent = message;
+  runtimeNotice.classList.add("is-visible");
+}
+
+function hideRuntimeNotice() {
+  if (!runtimeNotice) return;
+  runtimeNotice.classList.remove("is-visible");
+  runtimeNotice.textContent = "";
+}
+
 function detectPlatform() {
   const ua = navigator.userAgent || "";
   const platform = navigator.platform || "";
-
   if (/Android/i.test(ua)) return "android";
   if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
   if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(ua) || /Mac/i.test(platform)) return "macos";
@@ -63,38 +76,30 @@ function detectPlatform() {
 }
 
 function normalizeMac(mac) {
-  return String(mac || "")
-    .trim()
-    .replace(/-/g, ":")
-    .toUpperCase();
+  return String(mac || "").trim().replace(/-/g, ":").toUpperCase();
 }
 
 function isLocallyAdministeredMac(mac) {
-  const normalized = normalizeMac(mac);
-  const octets = normalized.split(":");
-
-  if (octets.length !== 6) return false;
-  if (!octets.every(part => /^[0-9A-F]{2}$/.test(part))) return false;
-
-  const firstOctet = parseInt(octets[0], 16);
-  return (firstOctet & 0x02) === 0x02;
+  const parts = normalizeMac(mac).split(":");
+  if (parts.length !== 6 || !parts.every(p => /^[0-9A-F]{2}$/.test(p))) return false;
+  return (parseInt(parts[0], 16) & 0x02) === 0x02;
 }
 
 function initPrivateMacWarning() {
   const warning = document.getElementById("private-mac-warning");
-  const value = document.getElementById("private-mac-value");
   const guidePlatform = document.getElementById("guide-platform");
   const guideSteps = document.getElementById("guide-steps");
   const macInput = document.getElementById("mac-addr");
+  const macLabel = document.getElementById("mac-label");
 
-  if (!warning || !macInput) return;
+  if (!macInput) return;
 
   const mac = normalizeMac(macInput.value);
-  if (value) value.textContent = mac || "-";
+  if (macLabel) macLabel.textContent = mac || "-";
 
-  const platform = detectPlatform();
-  const guide = platformGuides[platform] || platformGuides.other;
+  if (!warning || !isLocallyAdministeredMac(mac)) return;
 
+  const guide = platformGuides[detectPlatform()] || platformGuides.other;
   if (guidePlatform) guidePlatform.textContent = guide.label;
   if (guideSteps) {
     guideSteps.innerHTML = "";
@@ -105,49 +110,36 @@ function initPrivateMacWarning() {
     });
   }
 
-  if (isLocallyAdministeredMac(mac)) {
-    warning.classList.add("is-visible");
-  }
+  warning.classList.add("is-visible");
 }
 
 function toggleMacGuide() {
   const guide = document.getElementById("private-mac-guide");
-  if (!guide) return;
-  guide.classList.toggle("is-open");
-}
-
-function dismissMacWarning() {
-  const warning = document.getElementById("private-mac-warning");
-  if (!warning) return;
-  warning.classList.remove("is-visible");
+  if (guide) guide.classList.toggle("is-open");
 }
 
 function setVoucherPassword() {
-  if (!username || !password) return;
-  password.value = username.value;
+  if (username && password) password.value = username.value;
 }
 
 function toggleSingleField() {
   if (!username || !password || !autoMode) return;
 
   if (autoMode.checked) {
-    username.focus();
     username.addEventListener("input", setVoucherPassword);
     username.placeholder = "Masukkan kode voucher";
-    password.type = "hidden";
     password.value = username.value;
+    password.type = "hidden";
     if (passwordField) passwordField.classList.add("hidden");
   } else {
     username.removeEventListener("input", setVoucherPassword);
-    username.placeholder = "Masukkan username atau kode";
-    password.type = "password";
+    username.placeholder = "Masukkan username atau voucher";
     password.value = "";
+    password.type = "password";
     if (passwordField) passwordField.classList.remove("hidden");
   }
-}
 
-function togleSwitch() {
-  toggleSingleField();
+  username.focus();
 }
 
 function togglePassword() {
@@ -157,88 +149,107 @@ function togglePassword() {
 
 function setQrMode(active) {
   const qrReader = document.getElementById("qr-reader");
-  const autoModeLabel = document.getElementById("autoModeLabel");
-  const btnLog = document.getElementById("btnLog");
-  const btnQR = document.getElementById("btnQR");
+  const modeRow = document.getElementById("autoModeLabel");
+  const loginButton = document.getElementById("btnLog");
+  const qrButton = document.getElementById("btnQR");
 
-  [username?.closest(".field"), passwordField, autoModeLabel, btnLog, btnQR]
+  [usernameField, passwordField, modeRow, loginButton, qrButton]
     .filter(Boolean)
     .forEach(el => el.classList.toggle("hidden", active));
 
   if (qrReader) qrReader.classList.toggle("hidden", !active);
 }
 
-function applyQrCredential(qrCodeMessage) {
+function applyQrCredential(raw) {
   if (!username || !password) return false;
 
-  try {
-    const url = new URL(qrCodeMessage);
-    const uname = url.searchParams.get("username");
-    const passd = url.searchParams.get("password");
+  const text = String(raw || "").trim();
+  if (!text) return false;
 
-    if (uname && passd) {
+  try {
+    const url = new URL(text);
+    const uname = url.searchParams.get("username");
+    const pass = url.searchParams.get("password");
+    if (uname && pass) {
       username.value = uname;
-      password.value = passd;
+      password.value = pass;
       return true;
     }
-  } catch (_) {
-    // Continue with compact voucher formats below.
-  }
+  } catch (_) {}
 
-  const compact = String(qrCodeMessage || "").trim();
-  const separatorIndex = compact.indexOf(":");
-
-  if (separatorIndex > 0) {
-    username.value = compact.slice(0, separatorIndex);
-    password.value = compact.slice(separatorIndex + 1);
-    return Boolean(username.value && password.value);
+  const sep = text.indexOf(":");
+  if (sep > 0) {
+    const uname = text.slice(0, sep).trim();
+    const pass = text.slice(sep + 1).trim();
+    if (uname && pass) {
+      username.value = uname;
+      password.value = pass;
+      return true;
+    }
   }
 
   return false;
 }
 
-function startQRScanner() {
-  const qrReader = document.getElementById("qr-reader");
+function handleQrLibraryError() {
+  showRuntimeNotice("Scan QR tidak tersedia karena library kamera gagal dimuat. Login manual tetap bisa digunakan.");
+  const qrButton = document.getElementById("btnQR");
+  if (qrButton) qrButton.disabled = true;
+}
 
+function startQRScanner() {
+  hideRuntimeNotice();
+
+  const qrReader = document.getElementById("qr-reader");
   if (!qrReader) return;
-  if (typeof Html5Qrcode === "undefined") {
-    alert("Pemindai QR belum tersedia. Coba buka ulang halaman saat koneksi ke resource QR tersedia.");
+
+  if (window.qrLibraryFailed || typeof Html5Qrcode === "undefined") {
+    handleQrLibraryError();
     return;
   }
 
   setQrMode(true);
 
-  const html5QrCode = new Html5Qrcode("qr-reader");
-  html5QrCode.start(
-    { facingMode: "environment" },
-    {
-      fps: 10,
-      qrbox: { width: 250, height: 250 }
-    },
-    qrCodeMessage => {
-      const accepted = applyQrCredential(qrCodeMessage);
+  let scanner;
+  try {
+    scanner = new Html5Qrcode("qr-reader");
+  } catch (err) {
+    setQrMode(false);
+    showRuntimeNotice("Pemindai QR tidak dapat dijalankan pada browser ini.");
+    return;
+  }
 
-      html5QrCode.stop()
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 240, height: 240 } },
+    decodedText => {
+      const valid = applyQrCredential(decodedText);
+      scanner.stop()
         .catch(() => {})
         .finally(() => {
           setQrMode(false);
-          if (!accepted) {
-            alert("QR tidak berisi kredensial hotspot yang valid.");
+          if (!valid) {
+            showRuntimeNotice("QR tidak berisi username dan password hotspot yang valid.");
             return;
           }
-
+          hideRuntimeNotice();
           if (username) username.focus();
         });
     },
     () => {}
   ).catch(err => {
-    alert("Tidak bisa mengakses kamera: " + err);
     setQrMode(false);
+
+    const name = String(err && (err.name || err.message || err));
+    if (/NotAllowed|Permission/i.test(name)) {
+      showRuntimeNotice("Izin kamera ditolak. Izinkan kamera atau login secara manual.");
+    } else if (/NotFound|DevicesNotFound/i.test(name)) {
+      showRuntimeNotice("Kamera tidak ditemukan pada perangkat ini.");
+    } else {
+      showRuntimeNotice("Kamera tidak bisa dibuka. Login manual tetap bisa digunakan.");
+    }
   });
 }
 
-if (username) {
-  username.focus();
-}
-
+if (username) username.focus();
 document.addEventListener("DOMContentLoaded", initPrivateMacWarning);
