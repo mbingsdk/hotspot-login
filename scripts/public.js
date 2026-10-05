@@ -1,4 +1,3 @@
-const API_BASE="http://192.168.10.4:5000/api";
 function rupiah(n){return"Rp "+Number(n||0).toLocaleString("id-ID")}
 function packageIcon(pkg){
  const text=((pkg&&pkg.nama)||"")+" "+((pkg&&pkg.durasi)||"");
