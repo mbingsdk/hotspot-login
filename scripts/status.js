@@ -60,7 +60,7 @@ async function loadPackages() {
     list.innerHTML = "";
     packages.forEach(pkg => {
       const card = document.createElement("article");
-      card.className = "package-card";
+      card.className = "package-card"; if (pkg && pkg.nama && /Harian|Mingguan/i.test(pkg.nama)) card.classList.add("featured");
 
       const name = document.createElement("h3");
       name.textContent = pkg.nama || "Paket";
