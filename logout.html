@@ -1,4 +1,42 @@
-<script>
-    // Redirect 1 detik setelah logout
-    window.location.href = "/";
-</script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logout | SDK-Dev Hotspot</title>
+  <link href="./styles/hotspot.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="shell">
+    <header class="simple-header">
+      <a class="brand" href="$(link-login-only)">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M5.6 15a7 7 0 0 1 0-6M18.4 9a7 7 0 0 1 0 6M2.8 17.8a11 11 0 0 1 0-11.6M21.2 6.2a11 11 0 0 1 0 11.6"></path>
+          </svg>
+        </span>
+        <span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span>
+      </a>
+    </header>
+
+    <main class="login-main">
+      <section class="logout-card">
+        <h1>Koneksi selesai</h1>
+        <p>Sesi hotspot untuk <strong>$(username)</strong> sudah dihentikan.</p>
+        <div class="stat-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:20px">
+          <div class="stat">
+            <span>Uptime</span>
+            <strong>$(uptime)</strong>
+          </div>
+          <div class="stat">
+            <span>Total traffic</span>
+            <strong>$(bytes-in-nice) / $(bytes-out-nice)</strong>
+          </div>
+        </div>
+        <a class="btn btn-primary" href="$(link-login)">Login lagi</a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
