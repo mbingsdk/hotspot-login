@@ -1,6 +1,10 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Tentang | SDK-Dev Hotspot</title><link rel="icon" href="assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="styles/hotspot.css"></head><body>
-<header class="site-header"><div class="header-inner"><a class="brand" href="$(link-login-only)"><img class="brand-logo" src="assets/logo.svg" alt="SDK-Dev"><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a><div class="nav-scroll"><nav class="site-nav">
-<a  href="$(link-login-only)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="$(if logged-in == 'yes')$(link-status)$(else)$(link-login-only)$(endif)"><img class="brand-logo" src="assets/logo.svg" alt="SDK-Dev"><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a><div class="nav-scroll"><nav class="site-nav">
+$(if logged-in == 'yes')
+<a href="$(link-status)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Status</span></a>
+$(else)
+<a href="$(link-login-only)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(endif)
 <a  href="paket.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a class="active" href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
@@ -16,7 +20,11 @@
 <div class="service-item"><div class="service-head"><span class="service-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-automation"></use></svg></span><h3>Automation</h3></div><p>Mengurangi pekerjaan manual lewat tool dan proses yang terotomasi.</p></div></div></section>
 <section class="card card-pad"><div class="card-heading"><span class="heading-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-router"></use></svg></span><h2 class="section-title">Hotspot ini</h2></div><p class="section-copy">Portal ini dirancang untuk memberi akses internet, status sesi, paket, Mikcoins, dan bantuan dalam satu alur.</p><div class="info-grid"><div class="info-item"><span>Platform</span><strong>MikroTik HotSpot</strong></div><div class="info-item"><span>Login</span><strong>Voucher / akun</strong></div><div class="info-item"><span>Client identity</span><strong>MAC based</strong></div></div></section></div>
 </main><nav class="mobile-dock">
-<a  href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(if logged-in == 'yes')
+<a href="$(link-status)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Status</span></a>
+$(else)
+<a href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(endif)
 <a  href="paket.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>
 <a class="active" href="about.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
