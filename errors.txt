@@ -1,0 +1,16 @@
+internal-error = Terjadi kesalahan internal ($(error-orig))
+config-error = Konfigurasi hotspot bermasalah ($(error-orig))
+not-logged-in = Anda belum login
+ippool-empty = Alamat IP hotspot sedang penuh. Coba lagi nanti.
+shutting-down = Layanan hotspot sedang dimatikan sementara.
+user-session-limit = Sesi untuk pengguna $(username) sudah mencapai batas.
+license-session-limit = Batas sesi hotspot tercapai ($(error-orig))
+wrong-mac-username = Username tidak cocok dengan MAC perangkat ini.
+chap-missing = Respons login CHAP tidak diterima. Aktifkan JavaScript lalu coba lagi.
+invalid-username = Username atau password salah.
+invalid-mac = Akun $(username) tidak diizinkan login dari MAC perangkat ini.
+uptime-limit = Batas waktu akun $(username) sudah habis.
+traffic-limit = Batas kuota akun $(username) sudah habis.
+radius-timeout = Server autentikasi tidak merespons.
+auth-in-progress = Autentikasi masih diproses. Coba lagi sebentar.
+radius-reply = $(error-orig)
