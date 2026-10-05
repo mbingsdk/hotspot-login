@@ -1,5 +1,5 @@
-const HOTSPOT_API="http://192.168.10.4:5000/api";
-const HOTSPOT_CHAT_URL="ws://192.168.10.4:8000";
+const HOTSPOT_API=(location.protocol==="https:"?"https://":"http://")+"192.168.10.4:5000/api";
+const HOTSPOT_CHAT_URL=(location.protocol==="https:"?"wss://":"ws://")+"192.168.10.4:8000";
 let hotspotChatSocket=null;
 
 function svgIcon(id,cls="icon"){return '<svg class="'+cls+'" aria-hidden="true"><use href="assets/icons.svg#'+id+'"></use></svg>'}
