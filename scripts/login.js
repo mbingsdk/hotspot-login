@@ -253,3 +253,123 @@ function startQRScanner() {
 
 if (username) username.focus();
 document.addEventListener("DOMContentLoaded", initPrivateMacWarning);
+
+
+function setActivePublicRoute(route) {
+  document.querySelectorAll("[data-public-route]").forEach(el => {
+    el.classList.toggle("is-active", el.dataset.publicRoute === route);
+  });
+}
+
+function navigatePublic(route, updateHash = true) {
+  const loginView = document.getElementById("login-view");
+  const publicView = document.getElementById("public-view");
+  const title = document.getElementById("public-title");
+  const sections = {
+    paket: document.getElementById("public-paket"),
+    tentang: document.getElementById("public-tentang"),
+    kontak: document.getElementById("public-kontak")
+  };
+
+  Object.values(sections).forEach(section => section && section.classList.add("hidden"));
+
+  if (route === "login" || !sections[route]) {
+    if (loginView) loginView.classList.remove("hidden");
+    if (publicView) publicView.classList.add("hidden");
+    setActivePublicRoute("login");
+    if (updateHash && location.hash) history.pushState(null, "", location.pathname + location.search);
+    if (username) username.focus();
+    return;
+  }
+
+  if (loginView) loginView.classList.add("hidden");
+  if (publicView) publicView.classList.remove("hidden");
+  sections[route].classList.remove("hidden");
+  if (title) {
+    title.textContent = route === "paket" ? "Paket Internet" : route === "tentang" ? "Tentang" : "Kontak";
+  }
+  setActivePublicRoute(route);
+
+  if (route === "paket") loadPublicPackages();
+  if (updateHash) history.pushState(null, "", "#" + route);
+}
+
+function openScannerFromNav() {
+  navigatePublic("login");
+  setTimeout(startQRScanner, 0);
+}
+
+async function loadPublicPackages() {
+  const state = document.getElementById("public-package-state");
+  const list = document.getElementById("public-package-list");
+  if (!state || !list || list.dataset.loaded === "true") return;
+
+  state.classList.remove("hidden", "is-error");
+  state.textContent = "Memuat daftar paket...";
+
+  try {
+    const response = await fetch("assets/paket.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const packages = await response.json();
+    if (!Array.isArray(packages) || packages.length === 0) throw new Error("empty");
+
+    list.innerHTML = "";
+    packages.forEach(pkg => {
+      const card = document.createElement("article");
+      card.className = "package-card";
+
+      const h3 = document.createElement("h3");
+      h3.textContent = pkg.nama || "Paket";
+
+      const info = document.createElement("p");
+      info.textContent = [pkg.durasi, pkg.kecepatan].filter(Boolean).join(" · ");
+
+      const price = document.createElement("p");
+      price.className = "package-price";
+      price.textContent = "Rp " + Number(pkg.harga || 0).toLocaleString("id-ID");
+
+      const actions = document.createElement("div");
+      actions.className = "package-actions";
+
+      const buy = document.createElement("a");
+      buy.className = "btn btn-secondary";
+      buy.target = "_blank";
+      buy.rel = "noopener";
+      buy.textContent = "Beli via WhatsApp";
+      const message = "Halo, saya mau pesan paket Internet:\n" +
+        (pkg.nama || "Paket") + " - " + (pkg.durasi || "") +
+        ", Harga: Rp " + Number(pkg.harga || 0).toLocaleString("id-ID");
+      buy.href = "https://wa.me/628124140496?text=" + encodeURIComponent(message);
+
+      const coin = document.createElement("a");
+      coin.className = "btn btn-primary";
+      coin.textContent = "Pakai " + Number(pkg.coin || 0) + " Coin";
+      coin.href = "http://mbingsdk.net:5000/login?mac=" + encodeURIComponent(
+        document.getElementById("mac-addr")?.value || ""
+      );
+
+      actions.append(buy, coin);
+      card.append(h3, info, price, actions);
+      list.appendChild(card);
+    });
+
+    list.dataset.loaded = "true";
+    state.classList.add("hidden");
+    list.classList.remove("hidden");
+  } catch (_) {
+    state.textContent = "Daftar paket gagal dimuat. Coba buka ulang halaman.";
+    state.classList.add("is-error");
+  }
+}
+
+function applyPublicRouteFromHash() {
+  const route = location.hash.replace(/^#/, "");
+  if (["paket", "tentang", "kontak"].includes(route)) {
+    navigatePublic(route, false);
+  } else {
+    navigatePublic("login", false);
+  }
+}
+
+window.addEventListener("hashchange", applyPublicRouteFromHash);
+document.addEventListener("DOMContentLoaded", applyPublicRouteFromHash);
