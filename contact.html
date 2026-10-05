@@ -1,13 +1,21 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Kontak | SDK-Dev Hotspot</title><link rel="icon" href="assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="styles/hotspot.css"></head><body>
-<header class="site-header"><div class="header-inner"><a class="brand" href="$(link-login-only)"><img class="brand-logo" src="assets/logo.svg" alt="SDK-Dev"><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a><div class="nav-scroll"><nav class="site-nav">
-<a  href="$(link-login-only)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="$(if logged-in == 'yes')$(link-status)$(else)$(link-login-only)$(endif)"><img class="brand-logo" src="assets/logo.svg" alt="SDK-Dev"><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a><div class="nav-scroll"><nav class="site-nav">
+$(if logged-in == 'yes')
+<a href="$(link-status)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Status</span></a>
+$(else)
+<a href="$(link-login-only)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(endif)
 <a  href="paket.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a  href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a class="active" href="contact.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
 </nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a></div></div></header>
 <main class="page"><section class="hero-surface"><div class="hero-content"><p class="eyebrow">Support</p><h1 class="page-title">Butuh bantuan? Langsung ke kanal yang tepat.</h1><p class="page-subtitle">Untuk masalah voucher, pembayaran, login, MAC address, atau koneksi hotspot, hubungi admin melalui kanal di bawah.</p></div>
-<div class="hero-actions"><a class="btn btn-primary" href="https://wa.me/628124140496"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-whatsapp"></use></svg><span>WhatsApp admin</span></a><a class="btn btn-secondary" href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Kembali ke login</span></a></div>
+<div class="hero-actions"><a class="btn btn-primary" href="https://wa.me/628124140496"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-whatsapp"></use></svg><span>WhatsApp admin</span></a>$(if logged-in == 'yes')
+<a class="btn btn-secondary" href="$(link-status)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Kembali ke status</span></a>
+$(else)
+<a class="btn btn-secondary" href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Kembali ke login</span></a>
+$(endif)</div>
 <div class="hero-metrics"><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-router"></use></svg><span>Area</span></div><strong>Jomblo Cell</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Support</span></div><strong>Voucher & Hotspot</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-mail"></use></svg><span>Email</span></div><strong>therealtime3@gmail.com</strong></div></div></section>
 <div class="panel-grid"><section class="card card-pad"><div class="card-heading"><span class="heading-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg></span><h2 class="section-title">Hubungi kami</h2></div><div class="contact-grid">
 <a class="contact-link" href="https://wa.me/628124140496"><div class="contact-head"><span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-whatsapp"></use></svg></span><div><span>WhatsApp</span><strong>Hubungi admin</strong></div></div></a>
@@ -20,7 +28,11 @@
 <div class="faq-item"><strong>Paket atau coin bermasalah</strong><span>Sertakan MAC perangkat dan username saat menghubungi admin.</span></div>
 </div></section></div>
 </main><nav class="mobile-dock">
-<a  href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(if logged-in == 'yes')
+<a href="$(link-status)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Status</span></a>
+$(else)
+<a href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(endif)
 <a  href="paket.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>
 <a  href="about.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
