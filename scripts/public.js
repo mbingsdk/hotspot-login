@@ -8,7 +8,7 @@ async function loadPackages(){
   const rows=await r.json(); if(!Array.isArray(rows)||!rows.length)throw new Error("empty");
   list.innerHTML="";
   rows.forEach(p=>{
-   const card=document.createElement("article");card.className="package-card";
+   const card=document.createElement("article");card.className="package-card"; if ((p && p.nama && /Harian|Mingguan/i.test(p.nama)) || (typeof pkg !== "undefined" && pkg && pkg.nama && /Harian|Mingguan/i.test(pkg.nama))) card.classList.add("featured");
    const h=document.createElement("h3");h.textContent=p.nama||"Paket";
    const info=document.createElement("p");info.textContent=[p.durasi,p.kecepatan].filter(Boolean).join(" · ");
    const price=document.createElement("p");price.className="package-price";price.textContent=rupiah(p.harga);
