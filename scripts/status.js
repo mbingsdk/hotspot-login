@@ -1,4 +1,4 @@
-const API_BASE="http://192.168.10.4:5000/api";
+const API_BASE=(location.protocol==="https:"?"https://":"http://")+"192.168.10.4:5000/api";
 const statusData=window.HOTSPOT_STATUS||{};
 function formatBytes(bytes){
  const value=Number(bytes)||0;if(value<=0)return"0 B";
