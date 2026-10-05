@@ -5,7 +5,7 @@
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a  href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
-</nav></div><a class="header-action danger" href="$(link-logout)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-logout"></use></svg><span>Logout</span></a></div></header>
+</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a><a class="header-action danger" href="$(link-logout)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-logout"></use></svg><span>Logout</span></a></div></div></header>
 <main class="page"><section class="hero-surface"><div class="hero-content"><p class="eyebrow">Connected session</p><h1 class="page-title">Kamu sedang terhubung.</h1><p class="page-subtitle">Pantau sesi, traffic, sisa waktu, dan paket langsung dari satu halaman.</p></div>
 <div class="hero-actions"><span class="status-badge"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-check"></use></svg> ONLINE</span><button id="coin-display" class="btn btn-secondary" type="button"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></button><a class="btn btn-secondary" href="#usage"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-usage"></use></svg><span>Lihat usage</span></a></div>
 <div class="hero-metrics"><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-user"></use></svg><span>Username</span></div><strong>$(username)</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-ip"></use></svg><span>IP Address</span></div><strong>$(ip)</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-clock"></use></svg><span>Uptime</span></div><strong>$(uptime)</strong></div></div></section>
@@ -24,4 +24,17 @@
 <a  href="about.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
 </nav>
-<footer class="site-footer">SDK-Dev Hotspot</footer><div id="toast" class="toast hidden"></div><script>window.HOTSPOT_STATUS={mac:"$(mac)",username:"$(username)",bytesIn:Number("$(bytes-in)")||0,bytesOut:Number("$(bytes-out)")||0,remainBytesTotal:Number("$(if remain-bytes-total)$(remain-bytes-total)$(else)0$(endif)")||0};</script><script src="scripts/status.js"></script></body></html>
+<button class="chat-launcher" type="button" onclick="toggleChat()"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Chat</span></button>
+<section id="chat-panel" class="chat-panel hidden" aria-label="Live chat">
+  <div class="chat-header">
+    <div class="chat-title"><span class="heading-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg></span><div><strong>Live Chat</strong><span>Hubungi admin langsung</span></div></div>
+    <button class="chat-close" type="button" onclick="toggleChat()" aria-label="Tutup chat"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-close"></use></svg></button>
+  </div>
+  <div id="chat-status" class="chat-status">Belum terhubung</div>
+  <div id="chat-messages" class="chat-messages"><div class="chat-empty">Buka chat jika butuh bantuan login, voucher, paket, atau koneksi.</div></div>
+  <div class="chat-compose">
+    <input id="chat-name" autocomplete="name" placeholder="Nama Anda">
+    <textarea id="chat-message" rows="3" placeholder="Tulis pesan…"></textarea>
+    <button id="chat-send" class="btn btn-primary" type="button"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Kirim pesan</span></button>
+  </div>
+</section><input type="hidden" id="mac-addr" value="$(mac)"><footer class="site-footer">SDK-Dev Hotspot</footer><div id="toast" class="toast hidden"></div><script>window.HOTSPOT_STATUS={mac:"$(mac)",username:"$(username)",bytesIn:Number("$(bytes-in)")||0,bytesOut:Number("$(bytes-out)")||0,remainBytesTotal:Number("$(if remain-bytes-total)$(remain-bytes-total)$(else)0$(endif)")||0};</script><script src="scripts/common.js"></script><script src="scripts/status.js"></script></body></html>
