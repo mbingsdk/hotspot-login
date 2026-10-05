@@ -22,10 +22,18 @@
           <span>HOTSPOT</span>
         </span>
       </a>
+      <nav class="public-nav" aria-label="Navigasi publik">
+        <button type="button" data-public-route="login" onclick="navigatePublic('login')">Login</button>
+        <button type="button" data-public-route="scan" onclick="openScannerFromNav()">Scan QR</button>
+        <button type="button" data-public-route="paket" onclick="navigatePublic('paket')">Paket</button>
+        <a href="http://mbingsdk.net:5000/login?mac=$(mac)">Mikcoins</a>
+        <button type="button" data-public-route="tentang" onclick="navigatePublic('tentang')">Tentang</button>
+        <button type="button" data-public-route="kontak" onclick="navigatePublic('kontak')">Kontak</button>
+      </nav>
     </header>
 
     <main class="login-main">
-      <section class="login-card" aria-labelledby="login-title">
+      <section id="login-view" class="login-card" aria-labelledby="login-title">
         <h1 class="login-title" id="login-title">Login Hotspot</h1>
         <p class="login-subtitle">Masukkan akun atau kode voucher untuk terhubung.</p>
 
@@ -127,12 +135,66 @@
           <strong id="mac-label">$(mac)</strong>
         </div>
       </section>
+
+      <section id="public-view" class="public-view hidden" aria-live="polite">
+        <div class="public-view-head">
+          <div>
+            <p class="public-eyebrow">SDK-Dev Hotspot</p>
+            <h1 id="public-title">Informasi</h1>
+          </div>
+          <button class="btn btn-secondary" type="button" onclick="navigatePublic('login')">Kembali ke login</button>
+        </div>
+
+        <div id="public-paket" class="public-section hidden">
+          <p class="public-lead">Pilih paket internet. Paket dapat dilihat sebelum login.</p>
+          <div id="public-package-state" class="state-box">Memuat daftar paket...</div>
+          <div id="public-package-list" class="package-grid hidden"></div>
+        </div>
+
+        <div id="public-tentang" class="public-section hidden">
+          <div class="public-card">
+            <h2>Tentang SDK-Dev</h2>
+            <p>SDK-Dev menyediakan layanan hotspot, pengembangan software, integrasi sistem, dan pengelolaan jaringan.</p>
+            <div class="public-facts">
+              <div><span>Fokus</span><strong>Network & software</strong></div>
+              <div><span>Hotspot</span><strong>MikroTik based</strong></div>
+              <div><span>Dukungan</span><strong>SDK-Dev</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="public-kontak" class="public-section hidden">
+          <div class="public-card">
+            <h2>Kontak</h2>
+            <p>Hubungi admin jika ada masalah login, voucher, pembayaran, atau koneksi.</p>
+            <div class="contact-grid">
+              <a class="contact-link" href="https://wa.me/628124140496" target="_blank" rel="noopener">
+                <span>WhatsApp</span>
+                <strong>Hubungi admin</strong>
+              </a>
+              <a class="contact-link" href="mailto:therealtime3@gmail.com">
+                <span>Email</span>
+                <strong>therealtime3@gmail.com</strong>
+              </a>
+              <a class="contact-link" href="https://instagram.com/sdkdev13" target="_blank" rel="noopener">
+                <span>Instagram</span>
+                <strong>@sdkdev13</strong>
+              </a>
+              <a class="contact-link" href="https://tiktok.com/@mbingsdk" target="_blank" rel="noopener">
+                <span>TikTok</span>
+                <strong>@mbingsdk</strong>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="simple-footer">SDK-Dev Hotspot</footer>
   </div>
 
   <input type="hidden" id="mac-addr" value="$(mac)" />
+  <div id="public-toast" class="toast hidden"></div>
 
   $(if chap-id)
   <form name="sendin" action="$(link-login-only)" method="post">
