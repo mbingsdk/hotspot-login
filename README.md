@@ -38,3 +38,18 @@ The current integration references:
 - WhatsApp / social links
 
 For a captive portal that blocks external hosts before authentication, whitelist required hosts or host required JavaScript locally.
+
+
+## Deployment checklist
+
+Before production use:
+
+1. Upload the entire directory without changing the relative `assets/`, `scripts/`, and `styles/` paths.
+2. Verify the HotSpot profile points to this custom HTML directory.
+3. If public pages must open external services before authentication, allow the required hosts in the HotSpot walled garden.
+4. QR scanning loads `html5-qrcode` from `unpkg.com` only when Scan QR is pressed. Allow that host or self-host the library for fully offline captive-portal operation.
+5. Mikcoins uses the service on `192.168.10.4:5000`. The service must be reachable from hotspot clients and permit browser requests from the hotspot origin.
+6. Live chat uses port `8000`. If the HotSpot portal is served over HTTPS, the chat server must support WSS and the API must support HTTPS; otherwise the browser will reject insecure subresources.
+7. Test at minimum: wrong password, valid login, private/random MAC warning, QR denied permission, status/usage, coin API unavailable, chat unavailable, logout, and opening status while logged out.
+
+The portal is designed to degrade gracefully when QR, coin, or chat services are unavailable: manual login and local HotSpot pages remain usable.
