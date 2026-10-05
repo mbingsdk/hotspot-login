@@ -1,6 +1,10 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Paket | SDK-Dev Hotspot</title><link rel="icon" href="assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="styles/hotspot.css"></head><body>
-<header class="site-header"><div class="header-inner"><a class="brand" href="$(link-login-only)"><img class="brand-logo" src="assets/logo.svg" alt="SDK-Dev"><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a><div class="nav-scroll"><nav class="site-nav">
-<a  href="$(link-login-only)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="$(if logged-in == 'yes')$(link-status)$(else)$(link-login-only)$(endif)"><img class="brand-logo" src="assets/logo.svg" alt="SDK-Dev"><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a><div class="nav-scroll"><nav class="site-nav">
+$(if logged-in == 'yes')
+<a href="$(link-status)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Status</span></a>
+$(else)
+<a href="$(link-login-only)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(endif)
 <a class="active" href="paket.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a  href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
@@ -8,12 +12,20 @@
 </nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a></div></div></header>
 <main class="page">
 <section class="hero-surface"><div class="hero-content"><p class="eyebrow">Internet plans</p><h1 class="page-title">Pilih paket yang sesuai kebutuhanmu.</h1><p class="page-subtitle">Mulai dari akses singkat sampai paket bulanan. Bisa dibeli lewat WhatsApp atau menggunakan Mikcoins.</p></div>
-<div class="hero-actions"><a class="btn btn-primary" href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login sekarang</span></a><a class="btn btn-secondary" href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Tanya admin</span></a></div>
+<div class="hero-actions">$(if logged-in == 'yes')
+<a class="btn btn-primary" href="$(link-status)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Lihat status</span></a>
+$(else)
+<a class="btn btn-primary" href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login sekarang</span></a>
+$(endif)<a class="btn btn-secondary" href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Tanya admin</span></a></div>
 <div class="hero-metrics"><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Metode</span></div><strong>Voucher & Coin</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-automation"></use></svg><span>Aktivasi</span></div><strong>Otomatis / Admin</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Dukungan</span></div><strong>WhatsApp</strong></div></div></section>
 <section class="package-shell"><div id="package-state" class="state">Memuat paket...</div><div id="package-list" class="package-grid hidden"></div></section>
 <div class="panel-grid"><section class="feature-card"><div class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-plus"></use></svg></div><h3>Paket belum cocok?</h3><p>Hubungi admin untuk kebutuhan durasi, profil, atau paket khusus.</p><a class="link action-link" href="contact.html">Hubungi admin <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-arrow-right"></use></svg></a></section><section class="feature-card"><div class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg></div><h3>Punya Mikcoins?</h3><p>Saldo coin dapat dipakai untuk mengaktifkan paket yang tersedia.</p><a class="link action-link" href="http://mbingsdk.net:5000/login?mac=$(mac)">Buka Mikcoins <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-arrow-right"></use></svg></a></section></div>
 </main><nav class="mobile-dock">
-<a  href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(if logged-in == 'yes')
+<a href="$(link-status)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-dashboard"></use></svg><span>Status</span></a>
+$(else)
+<a href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
+$(endif)
 <a class="active" href="paket.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>
 <a  href="about.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
