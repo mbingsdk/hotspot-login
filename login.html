@@ -1,224 +1,46 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light" />
-  <title>Login Hotspot | SDK-Dev</title>
-  <link href="./styles/hotspot.css" rel="stylesheet" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light"><title>Login Hotspot | SDK-Dev</title>
+<link rel="stylesheet" href="styles/hotspot.css">
 </head>
 <body>
-  <div class="shell">
-    <header class="simple-header">
-      <a class="brand" href="$(link-login-only)" aria-label="SDK-Dev Hotspot">
-        <span class="brand-mark" aria-hidden="true">
-          <svg class="icon" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M5.6 15a7 7 0 0 1 0-6M18.4 9a7 7 0 0 1 0 6M2.8 17.8a11 11 0 0 1 0-11.6M21.2 6.2a11 11 0 0 1 0 11.6"></path>
-          </svg>
-        </span>
-        <span class="brand-copy">
-          <strong>SDK-Dev</strong>
-          <span>HOTSPOT</span>
-        </span>
-      </a>
-      <nav class="public-nav" aria-label="Navigasi publik">
-        <button type="button" data-public-route="login" onclick="navigatePublic('login')">Login</button>
-        <button type="button" data-public-route="scan" onclick="openScannerFromNav()">Scan QR</button>
-        <button type="button" data-public-route="paket" onclick="navigatePublic('paket')">Paket</button>
-        <a href="http://mbingsdk.net:5000/login?mac=$(mac)">Mikcoins</a>
-        <button type="button" data-public-route="tentang" onclick="navigatePublic('tentang')">Tentang</button>
-        <button type="button" data-public-route="kontak" onclick="navigatePublic('kontak')">Kontak</button>
-      </nav>
-    </header>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="$(link-login-only)"><span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M5.6 15a7 7 0 0 1 0-6M18.4 9a7 7 0 0 1 0 6M2.8 17.8a11 11 0 0 1 0-11.6M21.2 6.2a11 11 0 0 1 0 11.6"/></svg></span><span class="brand-copy"><strong>SDK-Dev</strong><span>HOTSPOT</span></span></a>
+<div class="nav-scroll"><nav class="site-nav"><a class="active" href="$(link-login-only)">Login</a><button type="button" onclick="startQRScanner()">Scan QR</button><a href="paket.html">Paket</a><a href="http://mbingsdk.net:5000/login?mac=$(mac)">Mikcoins</a><a href="about.html">Tentang</a><a href="contact.html">Kontak</a></nav></div>
+</div></header>
 
-    <main class="login-main">
-      <section id="login-view" class="login-card" aria-labelledby="login-title">
-        <h1 class="login-title" id="login-title">Login Hotspot</h1>
-        <p class="login-subtitle">Masukkan akun atau kode voucher untuk terhubung.</p>
+<main class="page narrow">
+<section class="card card-pad login-card">
+<h1 class="page-title">Login Hotspot</h1>
+<p class="page-subtitle">Masukkan akun atau kode voucher untuk terhubung.</p>
+<div class="form-error">$(if error)$(error)$(endif)</div>
 
-        <div class="form-error">$(if error)$(error)$(endif)</div>
+<div id="private-mac-warning" class="private-warning">
+<div class="warning-main"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 4 3.8 18.2A1.2 1.2 0 0 0 4.8 20h14.4a1.2 1.2 0 0 0 1-1.8z"/><path d="M12 9v4M12 16h.01"/></svg><div class="warning-copy"><strong>Private MAC terdeteksi</strong><p>Gunakan Device MAC untuk SSID ini agar voucher dan sesi tetap dikenali.</p><button class="link-button" type="button" onclick="toggleMacGuide()">Lihat petunjuk</button></div></div>
+<div id="private-mac-guide" class="mac-guide"><strong id="guide-platform">Perangkat</strong><ol id="guide-steps"></ol></div>
+</div>
 
-        <div id="private-mac-warning" class="private-mac-warning" role="alert">
-          <div class="warning-row">
-            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 4 3.8 18.2A1.2 1.2 0 0 0 4.8 20h14.4a1.2 1.2 0 0 0 1-1.8z"></path>
-              <path d="M12 9v4M12 16h.01"></path>
-            </svg>
-            <div class="warning-copy">
-              <strong>Private MAC terdeteksi</strong>
-              <p>Gunakan Device MAC untuk SSID ini agar voucher dan sesi tetap dikenali.</p>
-              <button class="warning-link" type="button" onclick="toggleMacGuide()">Lihat cara mengubahnya</button>
-            </div>
-          </div>
-          <div id="private-mac-guide" class="private-mac-guide">
-            <strong id="guide-platform">Perangkat</strong>
-            <ol id="guide-steps"></ol>
-          </div>
-        </div>
+<div id="runtime-notice" class="notice"></div>
+<form name="login" method="post" action="$(link-login-only)" $(if chap-id) onsubmit="return doLogin()" $(endif)>
+<input type="hidden" name="dst" value="$(link-status)"><input type="hidden" name="popup" value="false">
+<div id="qr-reader" class="qr-reader hidden"></div>
+<div class="field" id="username-field"><label for="login-username">Username / voucher</label><div class="input-shell"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg><input id="login-username" name="username" value="$(username)" placeholder="Masukkan username atau voucher" autocomplete="username" required></div></div>
+<div class="field" id="password-field"><label for="login-password">Password</label><div class="input-shell"><svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input id="login-password" name="password" type="password" placeholder="Masukkan password" autocomplete="current-password" required><button class="icon-button" type="button" onclick="togglePassword()" aria-label="Tampilkan password"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.5"/></svg></button></div></div>
+<div class="mode-row" id="autoModeLabel"><div class="mode-copy"><strong>Voucher satu kolom</strong><span>Aktifkan bila kode voucher = password.</span></div><label class="switch"><input id="autoMode" type="checkbox" onchange="toggleSingleField()"><span class="switch-track"></span></label></div>
+<div class="action-row"><button id="btnLog" class="btn btn-primary" type="submit">Masuk</button><button id="btnQR" class="btn btn-secondary" type="button" onclick="startQRScanner()">Scan QR</button></div>
+</form>
+<div class="meta-row"><span>MAC perangkat</span><strong id="mac-label">$(mac)</strong></div>
+</section>
+</main>
+<footer class="site-footer">SDK-Dev Hotspot</footer>
+<input type="hidden" id="mac-addr" value="$(mac)">
 
-        <div id="runtime-notice" class="inline-notice"></div>
-
-        <form name="login" method="post" action="$(link-login-only)" $(if chap-id) onsubmit="return doLogin()" $(endif)>
-          <input type="hidden" name="dst" value="$(link-status)" />
-          <input type="hidden" name="popup" value="false" />
-
-          <div id="qr-reader" class="qr-reader hidden"></div>
-
-          <div class="field" id="username-field">
-            <label for="login-username">Username / voucher</label>
-            <div class="input-shell">
-              <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path>
-              </svg>
-              <input
-                id="login-username"
-                name="username"
-                value="$(username)"
-                placeholder="Masukkan username atau voucher"
-                autocomplete="username"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="field" id="password-field">
-            <label for="login-password">Password</label>
-            <div class="input-shell">
-              <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="4" y="10" width="16" height="10" rx="2"></rect>
-                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-              </svg>
-              <input
-                id="login-password"
-                name="password"
-                type="password"
-                placeholder="Masukkan password"
-                autocomplete="current-password"
-                required
-              />
-              <button class="icon-button" type="button" onclick="togglePassword()" aria-label="Tampilkan password">
-                <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"></path>
-                  <circle cx="12" cy="12" r="2.5"></circle>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="mode-row" id="autoModeLabel">
-            <div class="mode-copy">
-              <strong>Voucher satu kolom</strong>
-              <span>Aktifkan jika kode voucher = password.</span>
-            </div>
-            <label class="switch" for="autoMode">
-              <input id="autoMode" type="checkbox" onchange="toggleSingleField()" />
-              <span class="switch-track"></span>
-            </label>
-          </div>
-
-          <div class="action-grid">
-            <button id="btnLog" class="btn btn-primary" type="submit">Masuk</button>
-            <button id="btnQR" class="btn btn-secondary" type="button" onclick="startQRScanner()">
-              <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3 8V4a1 1 0 0 1 1-1h4M16 3h4a1 1 0 0 1 1 1v4M21 16v4a1 1 0 0 1-1 1h-4M8 21H4a1 1 0 0 1-1-1v-4"></path>
-                <path d="M8 8h3v3H8zM13 13h3v3h-3zM8 15h2M15 8h1M18 12h1M12 18h1"></path>
-              </svg>
-              Scan QR
-            </button>
-          </div>
-        </form>
-
-        <div class="login-meta">
-          <span>MAC perangkat</span>
-          <strong id="mac-label">$(mac)</strong>
-        </div>
-      </section>
-
-      <section id="public-view" class="public-view hidden" aria-live="polite">
-        <div class="public-view-head">
-          <div>
-            <p class="public-eyebrow">SDK-Dev Hotspot</p>
-            <h1 id="public-title">Informasi</h1>
-          </div>
-          <button class="btn btn-secondary" type="button" onclick="navigatePublic('login')">Kembali ke login</button>
-        </div>
-
-        <div id="public-paket" class="public-section hidden">
-          <p class="public-lead">Pilih paket internet. Paket dapat dilihat sebelum login.</p>
-          <div id="public-package-state" class="state-box">Memuat daftar paket...</div>
-          <div id="public-package-list" class="package-grid hidden"></div>
-        </div>
-
-        <div id="public-tentang" class="public-section hidden">
-          <div class="public-card">
-            <h2>Tentang SDK-Dev</h2>
-            <p>SDK-Dev menyediakan layanan hotspot, pengembangan software, integrasi sistem, dan pengelolaan jaringan.</p>
-            <div class="public-facts">
-              <div><span>Fokus</span><strong>Network & software</strong></div>
-              <div><span>Hotspot</span><strong>MikroTik based</strong></div>
-              <div><span>Dukungan</span><strong>SDK-Dev</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div id="public-kontak" class="public-section hidden">
-          <div class="public-card">
-            <h2>Kontak</h2>
-            <p>Hubungi admin jika ada masalah login, voucher, pembayaran, atau koneksi.</p>
-            <div class="contact-grid">
-              <a class="contact-link" href="https://wa.me/628124140496" target="_blank" rel="noopener">
-                <span>WhatsApp</span>
-                <strong>Hubungi admin</strong>
-              </a>
-              <a class="contact-link" href="mailto:therealtime3@gmail.com">
-                <span>Email</span>
-                <strong>therealtime3@gmail.com</strong>
-              </a>
-              <a class="contact-link" href="https://instagram.com/sdkdev13" target="_blank" rel="noopener">
-                <span>Instagram</span>
-                <strong>@sdkdev13</strong>
-              </a>
-              <a class="contact-link" href="https://tiktok.com/@mbingsdk" target="_blank" rel="noopener">
-                <span>TikTok</span>
-                <strong>@mbingsdk</strong>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="simple-footer">SDK-Dev Hotspot</footer>
-  </div>
-
-  <input type="hidden" id="mac-addr" value="$(mac)" />
-  <div id="public-toast" class="toast hidden"></div>
-
-  $(if chap-id)
-  <form name="sendin" action="$(link-login-only)" method="post">
-    <input type="hidden" name="username" />
-    <input type="hidden" name="password" />
-    <input type="hidden" name="dst" value="$(link-status)" />
-    <input type="hidden" name="popup" value="false" />
-  </form>
-  <script src="scripts/md5.js"></script>
-  <script>
-    function doLogin() {
-      if (!document.login.username.value || !document.login.password.value) return false;
-      document.sendin.username.value = document.login.username.value;
-      document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value + '$(chap-challenge)');
-      document.sendin.submit();
-      return false;
-    }
-  </script>
-  $(endif)
-
-  <script src="scripts/login.js"></script>
-  <script>
-    window.qrLibraryFailed = false;
-  </script>
-  <script src="https://unpkg.com/html5-qrcode" onerror="window.qrLibraryFailed=true; handleQrLibraryError();"></script>
-</body>
-</html>
+$(if chap-id)
+<form name="sendin" action="$(link-login-only)" method="post"><input type="hidden" name="username"><input type="hidden" name="password"><input type="hidden" name="dst" value="$(link-status)"><input type="hidden" name="popup" value="false"></form>
+<script src="scripts/md5.js"></script><script>function doLogin(){if(!document.login.username.value||!document.login.password.value)return false;document.sendin.username.value=document.login.username.value;document.sendin.password.value=hexMD5('$(chap-id)'+document.login.password.value+'$(chap-challenge)');document.sendin.submit();return false}</script>
+$(endif)
+<script src="scripts/login.js"></script>
+<script>window.qrLibraryFailed=false;</script><script src="https://unpkg.com/html5-qrcode" onerror="window.qrLibraryFailed=true;handleQrLibraryError();"></script>
+</body></html>
