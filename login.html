@@ -5,8 +5,28 @@
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a  href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
-</nav></div></div></header>
-<main class="page narrow"><section class="card card-pad login-card">
+</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a></div></div></header>
+<main class="page login-page"><div class="login-layout">
+<section class="login-context">
+  <p class="eyebrow">SDK-Dev Hotspot</p>
+  <h1 class="page-title">Internet stabil, aksesnya tetap sederhana.</h1>
+  <p class="page-subtitle">Login tetap jadi fokus utama. Di sampingnya kamu bisa melihat info layanan, paket, dan akses bantuan tanpa memenuhi form dengan elemen yang tidak perlu.</p>
+  <div class="login-context-actions"><a class="btn btn-secondary" href="paket.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Lihat paket</span></a><a class="btn btn-secondary" href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Bantuan</span></a></div>
+  <div class="login-benefits">
+    <div class="login-benefit"><span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-wifi"></use></svg></span><strong>Akses cepat</strong><span>Masuk dengan voucher atau akun hotspot.</span></div>
+    <div class="login-benefit"><span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-router"></use></svg></span><strong>Status jelas</strong><span>Usage dan sesi bisa dicek setelah login.</span></div>
+    <div class="login-benefit"><span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg></span><strong>Bantuan langsung</strong><span>Chat admin tersedia tanpa mengganggu form.</span></div>
+  </div>
+  <div class="login-package-preview">
+    <div class="login-package-head"><strong>Paket tersedia</strong><a href="paket.html">Lihat semua</a></div>
+    <div class="login-package-list">
+      <span class="login-package-pill"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-clock"></use></svg>Harian</span>
+      <span class="login-package-pill"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-calendar"></use></svg>Mingguan</span>
+      <span class="login-package-pill"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-crown"></use></svg>Bulanan</span>
+    </div>
+  </div>
+</section>
+<section class="card card-pad login-card">
 <p class="eyebrow">Hotspot access</p><h1 class="page-title">Login Hotspot</h1><p class="page-subtitle">Masukkan akun atau kode voucher untuk terhubung.</p>
 <div class="form-error">$(if error)$(error)$(endif)</div>
 <div id="private-mac-warning" class="private-warning"><div class="warning-main"><svg class="icon icon-sm" aria-hidden="true"><use href="assets/icons.svg#i-alert"></use></svg><div class="warning-copy"><strong>Private MAC terdeteksi</strong><p>Gunakan Device MAC untuk SSID ini agar voucher dan sesi tetap dikenali.</p><button class="link-button action-link" type="button" onclick="toggleMacGuide()">Lihat petunjuk <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-arrow-right"></use></svg></button></div></div><div id="private-mac-guide" class="mac-guide"><strong id="guide-platform">Perangkat</strong><ol id="guide-steps"></ol></div></div>
@@ -19,13 +39,26 @@
 <div class="action-row"><button id="btnLog" class="btn btn-primary" type="submit"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Masuk</span></button><button id="btnQR" class="btn btn-secondary" type="button" onclick="startQRScanner()"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-qr"></use></svg><span>Scan QR</span></button></div>
 </form>
 <div class="meta-row"><span class="meta-label"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-mac"></use></svg>MAC perangkat</span><strong id="mac-label">$(mac)</strong></div>
-</section></main><nav class="mobile-dock">
+</section></div></main><nav class="mobile-dock">
 <a class="active" href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login</span></a>
 <a  href="paket.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Paket</span></a>
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>
 <a  href="about.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
 </nav>
-<footer class="site-footer">SDK-Dev Hotspot</footer><input type="hidden" id="mac-addr" value="$(mac)">
+<button class="chat-launcher" type="button" onclick="toggleChat()"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Chat</span></button>
+<section id="chat-panel" class="chat-panel hidden" aria-label="Live chat">
+  <div class="chat-header">
+    <div class="chat-title"><span class="heading-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg></span><div><strong>Live Chat</strong><span>Hubungi admin langsung</span></div></div>
+    <button class="chat-close" type="button" onclick="toggleChat()" aria-label="Tutup chat"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-close"></use></svg></button>
+  </div>
+  <div id="chat-status" class="chat-status">Belum terhubung</div>
+  <div id="chat-messages" class="chat-messages"><div class="chat-empty">Buka chat jika butuh bantuan login, voucher, paket, atau koneksi.</div></div>
+  <div class="chat-compose">
+    <input id="chat-name" autocomplete="name" placeholder="Nama Anda">
+    <textarea id="chat-message" rows="3" placeholder="Tulis pesan…"></textarea>
+    <button id="chat-send" class="btn btn-primary" type="button"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Kirim pesan</span></button>
+  </div>
+</section><footer class="site-footer">SDK-Dev Hotspot</footer><input type="hidden" id="mac-addr" value="$(mac)">
 $(if chap-id)<form name="sendin" action="$(link-login-only)" method="post"><input type="hidden" name="username"><input type="hidden" name="password"><input type="hidden" name="dst" value="$(link-status)"><input type="hidden" name="popup" value="false"></form><script src="scripts/md5.js"></script><script>function doLogin(){if(!document.login.username.value||!document.login.password.value)return false;document.sendin.username.value=document.login.username.value;document.sendin.password.value=hexMD5('$(chap-id)'+document.login.password.value+'$(chap-challenge)');document.sendin.submit();return false}</script>$(endif)
-<script src="scripts/login.js"></script><script>window.qrLibraryFailed=false;</script><script src="https://unpkg.com/html5-qrcode" onerror="window.qrLibraryFailed=true;handleQrLibraryError();"></script></body></html>
+<script src="scripts/common.js"></script><script src="scripts/login.js"></script><script>window.qrLibraryFailed=false;</script><script src="https://unpkg.com/html5-qrcode" onerror="window.qrLibraryFailed=true;handleQrLibraryError();"></script></body></html>
