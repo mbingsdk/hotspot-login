@@ -553,3 +553,25 @@ a{color:inherit}
   .login-point{grid-template-columns:18px minmax(0,1fr)}
   .login-point span{font-size:.68rem}
 }
+
+/* Status icon cleanup */
+.stat-label{
+  display:inline-flex!important;
+  align-items:center;
+  gap:7px;
+  margin-bottom:7px!important;
+  color:var(--muted);
+  font-size:.68rem;
+}
+.stat-label .icon{
+  width:14px;
+  height:14px;
+  color:var(--secondary);
+}
+.status-badge .icon{width:13px;height:13px}
+.hero-metrics .metric>span{
+  display:block;
+  color:var(--muted);
+  font-size:.67rem;
+}
+.hero-metrics .metric>strong{margin-top:5px}
