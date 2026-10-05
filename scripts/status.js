@@ -64,25 +64,8 @@ async function useCoin(pkg,button){
   const response=await fetch(API_BASE+"/user/use-coin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({coin:Number(pkg.coin||0),paket:pkg.nama,paketMap:pkg,mac})});
   let result={};try{result=await response.json()}catch(_){}
   if(!response.ok||!result.success)throw new Error(result.message||"Paket tidak dapat diaktifkan.");
-  showToast("Paket berhasil diaktifkan.","success");await loadCoin();
+  showToast("Paket berhasil diaktifkan.","success");if(typeof initCoinIndicator==="function")await initCoinIndicator();
  }catch(err){showToast(err.message||"Gagal memproses pembelian paket.","error")}
  finally{button.disabled=false;button.innerHTML=original}
 }
-async function loadCoin(){
- const el=document.getElementById("coin-display");if(!el)return;
- const mac=statusData.mac||"";if(!mac){el.innerHTML=buttonIcon("i-coin","Coin -");el.disabled=true;return}
- try{
-  const response=await fetch(API_BASE+"/user/by-mac?mac="+encodeURIComponent(mac));
-  if(!response.ok){
-   el.innerHTML=buttonIcon("i-coin","Mikcoins");
-   el.onclick=()=>{window.location.href="http://mbingsdk.net:5000/login?mac="+encodeURIComponent(mac)};return;
-  }
-  const data=await response.json();
-  el.innerHTML=buttonIcon("i-coin","Coin "+Number(data.coins||0));
-  el.onclick=()=>showToast((data.username?data.username+": ":"")+Number(data.coins||0)+" coin tersedia.","info");
- }catch(_){
-  el.innerHTML=buttonIcon("i-coin","Mikcoins");
-  el.onclick=()=>{window.location.href="http://mbingsdk.net:5000/login?mac="+encodeURIComponent(mac)};
- }
-}
-document.addEventListener("DOMContentLoaded",()=>{initUsage();loadPackages();loadCoin()});
+document.addEventListener("DOMContentLoaded",()=>{initUsage();loadPackages()});
