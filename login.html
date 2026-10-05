@@ -61,4 +61,4 @@
   </div>
 </section><footer class="site-footer">SDK-Dev Hotspot</footer><input type="hidden" id="mac-addr" value="$(mac)">
 $(if chap-id)<form name="sendin" action="$(link-login-only)" method="post"><input type="hidden" name="username"><input type="hidden" name="password"><input type="hidden" name="dst" value="$(link-status)"><input type="hidden" name="popup" value="false"></form><script src="scripts/md5.js"></script><script>function doLogin(){if(!document.login.username.value||!document.login.password.value)return false;document.sendin.username.value=document.login.username.value;document.sendin.password.value=hexMD5('$(chap-id)'+document.login.password.value+'$(chap-challenge)');document.sendin.submit();return false}</script>$(endif)
-<script src="scripts/common.js"></script><script src="scripts/login.js"></script><script>window.qrLibraryFailed=false;</script><script src="https://unpkg.com/html5-qrcode" onerror="window.qrLibraryFailed=true;handleQrLibraryError();"></script></body></html>
+<script src="scripts/common.js"></script><script src="scripts/login.js"></script></body></html>
