@@ -100,7 +100,7 @@ async function loadPackages() {
     list.classList.remove("hidden");
   } catch (err) {
     state.textContent = "Daftar paket gagal dimuat. Coba muat ulang halaman.";
-    state.classList.add("is-error");
+    state.classList.add("error");
   }
 }
 
