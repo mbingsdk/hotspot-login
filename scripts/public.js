@@ -41,11 +41,11 @@ async function loadPackages(){
    wa.innerHTML=makeButtonIcon("i-whatsapp","Beli via WhatsApp");
    wa.href="https://wa.me/628124140496?text="+encodeURIComponent("Halo, saya mau pesan paket Internet:\n"+(p.nama||"Paket")+" - "+(p.durasi||"")+", Harga: "+rupiah(p.harga));
 
-   const coin=document.createElement("a");
+   const coin=document.createElement("button");
+   coin.type="button";
    coin.className="btn btn-primary";
    coin.innerHTML=makeButtonIcon("i-coin","Pakai "+Number(p.coin||0)+" Coin");
-   const mac=document.getElementById("mac-addr")?.value||"";
-   coin.href="http://mbingsdk.net:5000/login?mac="+encodeURIComponent(mac);
+   coin.addEventListener("click",()=>buyVoucherWithCoins(p,coin));
 
    actions.append(wa,coin);
    card.append(iconBox,h,info,price,actions);
