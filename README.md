@@ -53,3 +53,20 @@ Before production use:
 7. Test at minimum: wrong password, valid login, private/random MAC warning, QR denied permission, status/usage, coin API unavailable, chat unavailable, logout, and opening status while logged out.
 
 The portal is designed to degrade gracefully when QR, coin, or chat services are unavailable: manual login and local HotSpot pages remain usable.
+
+## Pengumuman / iklan di halaman Login
+
+Pengumuman menggunakan file `assets/announcement.json` dan **hanya** dimuat oleh `login.html`. Default adalah nonaktif agar contoh promo tidak langsung diumumkan.
+
+Ubah `"enabled": true` untuk menampilkan pengumuman. Isi yang bisa disunting:
+- `id`: ID unik untuk versi pengumuman. Ganti ID saat mengubah promosi supaya pengunjung melihat versi baru.
+- `badge`: label kecil di atas judul.
+- `title`: judul pengumuman.
+- `message`: keterangan.
+- `highlight`: teks yang ditonjolkan, contohnya `Sekarang 15 Mbps`.
+- `actionText` dan `actionUrl`: teks dan tujuan tombol. Tujuan dibatasi pada `paket.html`, `about.html`, atau `contact.html`. Jika tidak valid, tombol tidak ditampilkan.
+- `showOncePerSession`: jika true, tampil maksimal sekali per ID per sesi tab/browser (bergantung dukungan sessionStorage captive webview).
+- `delayMs`: jeda popup 0–3000 ms sebelum modal ditampilkan.
+- `autoCloseSeconds`: modal tertutup otomatis setelah 10 detik sejak muncul. Ubah angkanya bila perlu (0 untuk menonaktifkan auto-close, maksimum 120 detik). Ada hitung mundur kecil dan timer dibatalkan saat popup ditutup secara manual.
+
+Ubah `"enabled": false` untuk mematikan popup tanpa menyentuh HTML atau JS. Jika konfigurasi gagal dimuat, halaman login tetap normal tanpa popup. Pastikan `assets/announcement.json` ikut di-upload ke direktori HotSpot.

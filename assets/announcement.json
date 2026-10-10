@@ -1,0 +1,13 @@
+{
+  "enabled": false,
+  "id": "paket-2000-upgrade-15mbps",
+  "badge": "INFO PAKET",
+  "title": "Paket Rp2.000 makin cepat",
+  "message": "Ada peningkatan kecepatan untuk Paket Rp2.000.",
+  "highlight": "Sekarang 15 Mbps",
+  "actionText": "Lihat paket",
+  "actionUrl": "paket.html",
+  "showOncePerSession": true,
+  "delayMs": 900,
+  "autoCloseSeconds": 10
+}
