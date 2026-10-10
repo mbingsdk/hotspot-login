@@ -452,8 +452,12 @@ a{color:inherit}
   .login-benefits{grid-template-columns:1fr}
 }
 @media(max-width:760px){
-  .header-tools .coin-chip span{display:none}
-  .coin-chip{width:40px;padding:0;justify-content:center}
+  .header-inner{gap:8px}
+  .header-tools{gap:6px}
+  .coin-chip{min-width:84px;min-height:36px;padding:6px 9px;gap:5px}
+  .coin-chip span{display:inline!important;font-size:.7rem}
+  .logout-link{min-height:36px;min-width:36px;padding:7px;justify-content:center}
+  .logout-link span{display:none}
 }
 @media(max-width:680px){
   .login-page{width:calc(100% - 24px);padding-top:14px}
@@ -575,3 +579,29 @@ a{color:inherit}
   font-size:.67rem;
 }
 .hero-metrics .metric>strong{margin-top:5px}
+
+/* Generated voucher and compact session actions */
+.header-tools{min-width:0}
+.coin-chip span{font-variant-numeric:tabular-nums}
+.voucher-result{margin-top:16px;scroll-margin-top:100px;outline:none}
+.voucher-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.voucher-head .section-title{margin:0}
+.voucher-close{border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);padding:7px 10px;cursor:pointer;font-size:.72rem}
+.voucher-intro{margin:12px 0;color:var(--muted);font-size:.8rem;line-height:1.55}
+.voucher-package-name{margin:10px 0;color:var(--primary);font-size:.82rem;font-weight:750}
+.voucher-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+.voucher-field{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(5,23,47,.45)}
+.voucher-field dt{color:var(--muted);font-size:.68rem}
+.voucher-field dd{margin:5px 0 0;color:var(--text);font-size:.82rem;font-weight:750;overflow-wrap:anywhere;user-select:text}
+.voucher-actions{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:680px){
+  .header-inner{gap:6px;padding-left:8px;padding-right:8px}
+  .brand{gap:6px}
+  .brand-logo{width:30px;height:30px}
+  .brand-copy strong{font-size:.82rem}
+  .header-tools{margin-left:auto;gap:5px}
+  .coin-chip{min-width:78px;max-width:124px;padding:6px 8px;overflow:hidden}
+  .coin-chip span{font-size:.67rem;overflow:hidden;text-overflow:ellipsis}
+  .header-action.danger{margin-left:0}
+  .voucher-grid{grid-template-columns:1fr}
+}
