@@ -8,5 +8,6 @@
   "actionText": "Lihat paket",
   "actionUrl": "paket.html",
   "showOncePerSession": true,
-  "delayMs": 900
+  "delayMs": 900,
+  "autoCloseSeconds": 10
 }
