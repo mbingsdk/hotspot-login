@@ -66,6 +66,7 @@ Ubah `"enabled": true` untuk menampilkan pengumuman. Isi yang bisa disunting:
 - `highlight`: teks yang ditonjolkan, contohnya `Sekarang 15 Mbps`.
 - `actionText` dan `actionUrl`: teks dan tujuan tombol. Tujuan dibatasi pada `paket.html`, `about.html`, atau `contact.html`. Jika tidak valid, tombol tidak ditampilkan.
 - `showOncePerSession`: jika true, tampil maksimal sekali per ID per sesi tab/browser (bergantung dukungan sessionStorage captive webview).
-- `delayMs`: jeda popup 0–3000 ms.
+- `delayMs`: jeda popup 0–3000 ms sebelum modal ditampilkan.
+- `autoCloseSeconds`: modal tertutup otomatis setelah 10 detik sejak muncul. Ubah angkanya bila perlu (0 untuk menonaktifkan auto-close, maksimum 120 detik). Ada hitung mundur kecil dan timer dibatalkan saat popup ditutup secara manual.
 
 Ubah `"enabled": false` untuk mematikan popup tanpa menyentuh HTML atau JS. Jika konfigurasi gagal dimuat, halaman login tetap normal tanpa popup. Pastikan `assets/announcement.json` ikut di-upload ke direktori HotSpot.
