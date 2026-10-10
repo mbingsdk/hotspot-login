@@ -16,6 +16,37 @@
   const highlight = document.getElementById("announcement-highlight");
   let lastFocus = null;
   let opened = false;
+  const countdown = document.getElementById("announcement-countdown");
+  let autoCloseSeconds = 10;
+  let closeTimer = null;
+  let countdownTimer = null;
+
+  function clearAutoClose() {
+    if (closeTimer !== null) window.clearTimeout(closeTimer);
+    if (countdownTimer !== null) window.clearInterval(countdownTimer);
+    closeTimer = null;
+    countdownTimer = null;
+  }
+
+  function startAutoClose() {
+    clearAutoClose();
+    if (autoCloseSeconds === 0) {
+      if (countdown) countdown.classList.add("hidden");
+      return;
+    }
+    const duration = autoCloseSeconds * 1000;
+    const deadline = Date.now() + duration;
+    if (countdown) {
+      countdown.classList.remove("hidden");
+      countdown.textContent = "Menutup otomatis dalam " + autoCloseSeconds + " detik";
+      countdownTimer = window.setInterval(() => {
+        if (!opened) return;
+        const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+        countdown.textContent = "Menutup otomatis dalam " + remaining + " detik";
+      }, 250);
+    }
+    closeTimer = window.setTimeout(closeAnnouncement, duration);
+  }
 
   function safeText(value, fallback, limit) {
     return typeof value === "string" && value.trim()
@@ -26,6 +57,7 @@
   function closeAnnouncement() {
     if (!opened) return;
     opened = false;
+    clearAutoClose();
     modal.classList.add("hidden");
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("announcement-open");
@@ -67,6 +99,7 @@
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("announcement-open");
     closeButton.focus({ preventScroll: true });
+    startAutoClose();
   }
 
   function configure(config) {
@@ -103,6 +136,11 @@
       action.removeAttribute("href");
       action.classList.add("hidden");
     }
+
+    const configuredClose = Number(config.autoCloseSeconds);
+    autoCloseSeconds = Number.isFinite(configuredClose)
+      ? Math.min(120, Math.max(0, Math.round(configuredClose)))
+      : 10;
 
     const delay = Number(config.delayMs);
     const delayMs = Number.isFinite(delay) ? Math.min(3000, Math.max(0, delay)) : 900;
