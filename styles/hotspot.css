@@ -644,7 +644,8 @@ a{color:inherit}
   border-radius:14px;color:var(--primary);background:rgba(33,230,193,.075);
   font-size:1.13rem;font-weight:800;letter-spacing:-.02em
 }
-.announcement-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.announcement-countdown{margin:14px 0 0;color:var(--muted);font-size:.72rem;font-variant-numeric:tabular-nums}
+.announcement-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
 .announcement-actions .btn{flex:1}
 @media(max-width:680px){
   .announcement-overlay{align-items:center;padding:14px}
