@@ -5,7 +5,7 @@
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a  href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
-</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a></div></div></header>
+</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>$(if logged-in == 'yes')<a class="header-action danger logout-link" href="$(link-logout)" aria-label="Logout"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-logout"></use></svg><span>Logout</span></a>$(endif)</div></div></header>
 <main class="page login-page"><div class="login-layout">
 <section class="login-context">
   <p class="eyebrow">SDK-Dev Hotspot</p>

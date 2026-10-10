@@ -51,21 +51,10 @@ async function loadPackages(){
    const message="Halo, saya mau pesan paket Internet:\n"+(pkg.nama||"Paket")+" - "+(pkg.durasi||"")+", Harga: Rp "+Number(pkg.harga||0).toLocaleString("id-ID");
    wa.href="https://wa.me/628124140496?text="+encodeURIComponent(message);
    const coin=document.createElement("button");coin.type="button";coin.className="btn btn-primary";coin.innerHTML=buttonIcon("i-coin","Pakai "+Number(pkg.coin||0)+" Coin");
-   coin.addEventListener("click",()=>useCoin(pkg,coin));
+   coin.addEventListener("click",()=>buyVoucherWithCoins(pkg,coin));
    actions.append(wa,coin);card.append(iconBox,name,info,price,actions);list.appendChild(card);
   });
   state.classList.add("hidden");list.classList.remove("hidden");
  }catch(err){state.textContent="Daftar paket gagal dimuat. Coba muat ulang halaman.";state.classList.add("error")}
-}
-async function useCoin(pkg,button){
- const mac=statusData.mac||"";if(!mac){showToast("MAC perangkat tidak tersedia.","error");return}
- const original=button.innerHTML;button.disabled=true;button.innerHTML=buttonIcon("i-automation","Memproses...");
- try{
-  const response=await fetch(API_BASE+"/user/use-coin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({coin:Number(pkg.coin||0),paket:pkg.nama,paketMap:pkg,mac})});
-  let result={};try{result=await response.json()}catch(_){}
-  if(!response.ok||!result.success)throw new Error(result.message||"Paket tidak dapat diaktifkan.");
-  showToast("Paket berhasil diaktifkan.","success");if(typeof initCoinIndicator==="function")await initCoinIndicator();
- }catch(err){showToast(err.message||"Gagal memproses pembelian paket.","error")}
- finally{button.disabled=false;button.innerHTML=original}
 }
 document.addEventListener("DOMContentLoaded",()=>{initUsage();loadPackages()});

@@ -9,7 +9,7 @@ $(endif)
 <a href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Mikcoins</span></a>
 <a  href="about.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-info"></use></svg><span>Tentang</span></a>
 <a  href="contact.html"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-contact"></use></svg><span>Kontak</span></a>
-</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a></div></div></header>
+</nav></div><div class="header-tools"><a id="coin-indicator" class="coin-chip is-loading" href="http://mbingsdk.net:5000/login?mac=$(mac)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg><span>Coin</span></a>$(if logged-in == 'yes')<a class="header-action danger logout-link" href="$(link-logout)" aria-label="Logout"><svg class="icon nav-icon" aria-hidden="true"><use href="assets/icons.svg#i-logout"></use></svg><span>Logout</span></a>$(endif)</div></div></header>
 <main class="page">
 <section class="hero-surface"><div class="hero-content"><p class="eyebrow">Internet plans</p><h1 class="page-title">Pilih paket yang sesuai kebutuhanmu.</h1><p class="page-subtitle">Mulai dari akses singkat sampai paket bulanan. Bisa dibeli lewat WhatsApp atau menggunakan Mikcoins.</p></div>
 <div class="hero-actions">$(if logged-in == 'yes')
@@ -18,7 +18,7 @@ $(else)
 <a class="btn btn-primary" href="$(link-login-only)"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-login"></use></svg><span>Login sekarang</span></a>
 $(endif)<a class="btn btn-secondary" href="contact.html"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Tanya admin</span></a></div>
 <div class="hero-metrics"><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg><span>Metode</span></div><strong>Voucher & Coin</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-automation"></use></svg><span>Aktivasi</span></div><strong>Otomatis / Admin</strong></div><div class="metric"><div class="metric-head"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-support"></use></svg><span>Dukungan</span></div><strong>WhatsApp</strong></div></div></section>
-<section class="package-shell"><div id="package-state" class="state">Memuat paket...</div><div id="package-list" class="package-grid hidden"></div></section>
+<section class="package-shell"><div id="package-state" class="state">Memuat paket...</div><div id="package-list" class="package-grid hidden"></div><section id="voucher-result" class="card card-pad voucher-result hidden" tabindex="-1" aria-live="polite"></section></section>
 <div class="panel-grid"><section class="feature-card"><div class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-plus"></use></svg></div><h3>Paket belum cocok?</h3><p>Hubungi admin untuk kebutuhan durasi, profil, atau paket khusus.</p><a class="link action-link" href="contact.html">Hubungi admin <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-arrow-right"></use></svg></a></section><section class="feature-card"><div class="feature-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-coin"></use></svg></div><h3>Punya Mikcoins?</h3><p>Saldo coin dapat dipakai untuk mengaktifkan paket yang tersedia.</p><a class="link action-link" href="http://mbingsdk.net:5000/login?mac=$(mac)">Buka Mikcoins <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-arrow-right"></use></svg></a></section></div>
 </main><nav class="mobile-dock">
 $(if logged-in == 'yes')
@@ -43,4 +43,4 @@ $(endif)
     <textarea id="chat-message" rows="3" placeholder="Tulis pesan…"></textarea>
     <button id="chat-send" class="btn btn-primary" type="button"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chat"></use></svg><span>Kirim pesan</span></button>
   </div>
-</section><footer class="site-footer">SDK-Dev Hotspot</footer><input type="hidden" id="mac-addr" value="$(mac)"><script src="scripts/public.js"></script><script src="scripts/common.js"></script></body></html>
+</section><footer class="site-footer">SDK-Dev Hotspot</footer><input type="hidden" id="mac-addr" value="$(mac)"><script src="scripts/public.js"></script><script src="scripts/common.js"></script><script src="scripts/voucher.js"></script></body></html>
