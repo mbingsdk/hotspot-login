@@ -22,17 +22,167 @@ function showToast(message,type="info"){
  toast.textContent=message;toast.className="toast "+type;toast.classList.remove("hidden");
  clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.add("hidden"),3200);
 }
-function initUsage(){
- const bytesIn=Number(statusData.bytesIn)||0,bytesOut=Number(statusData.bytesOut)||0,used=bytesIn+bytesOut;
- const totalEl=document.getElementById("traffic-total");if(totalEl)totalEl.textContent=formatBytes(used);
- const remain=Number(statusData.remainBytesTotal)||0;
- const progress=document.getElementById("quota-progress"),label=document.getElementById("quota-label"),note=document.getElementById("quota-note");
- if(!progress||!label||!note||remain<=0)return;
- const limit=used+remain,percent=limit>0?Math.min(100,Math.max(0,(used/limit)*100)):0;
+/* RouterOS status values refresh every ten seconds without reloading the page.
+   Counters come exclusively from the router; timers animate between snapshots. */
+const REFRESH_MS=10000;
+const statusSnapshot=document.getElementById("hotspot-status-snapshot");
+let sessionState=null;
+let refreshing=false;
+let lastSyncTime=0;
+
+function snapshotFrom(root){
+ const el=root.querySelector("#hotspot-status-snapshot");
+ if(!el)return null;
+ const get=key=>el.querySelector('[data-status-key="'+key+'"]')?.textContent.trim()||"";
+ const int=key=>{
+   const raw=get(key);
+   return /^\\d+$/.test(raw)?Number(raw):null;
+ };
+ const uptime=int("uptimeSeconds"),left=int("timeLeftSeconds");
+ const limit=get("hasTimeLimit")==="yes";
+ if(uptime===null)return null;
+ return {
+   loggedIn:get("loggedIn"),
+   uptime,limit,left,
+   upText:get("uptimeText"),leftText:get("timeLeftText"),
+   inBytes:int("bytesIn"),outBytes:int("bytesOut"),
+   inNice:get("bytesInNice"),outNice:get("bytesOutNice"),
+   remaining:int("remainBytesTotal")
+ };
+}
+
+function duration(seconds){
+ seconds=Math.max(0,Math.floor(seconds));
+ const days=Math.floor(seconds/86400);
+ const hours=Math.floor(seconds%86400/3600);
+ const mins=Math.floor(seconds%3600/60);
+ const secs=seconds%60;
+ const hh=String(hours).padStart(2,"0");
+ const mm=String(mins).padStart(2,"0");
+ const ss=String(secs).padStart(2,"0");
+ return (days?days+" hari ":"")+hh+":"+mm+":"+ss;
+}
+function setText(id,value){
+ const el=document.getElementById(id);if(el)el.textContent=value;
+}
+function refreshNote(value,kind=""){
+ const el=document.getElementById("status-refresh-info");
+ if(!el)return;
+ el.textContent=value;
+ el.className="status-refresh-info"+(kind?" "+kind:"");
+}
+function renderTraffic(data){
+ if(data.inBytes===null||data.outBytes===null)return;
+ setText("traffic-total",formatBytes(data.inBytes+data.outBytes));
+ const download=data.outNice||formatBytes(data.outBytes);
+ const upload=data.inNice||formatBytes(data.inBytes);
+ setText("detail-download",download);setText("usage-download",download);
+ setText("detail-upload",upload);setText("usage-upload",upload);
+ const progress=document.getElementById("quota-progress");
+ const label=document.getElementById("quota-label");
+ const note=document.getElementById("quota-note");
+ if(!progress||!label||!note)return;
+ if(data.remaining===null){
+   progress.style.width="0%";
+   label.textContent="Tidak tersedia";
+   note.textContent="Informasi sisa kuota belum tersedia.";
+   return;
+ }
+ const used=data.inBytes+data.outBytes;
+ const total=used+data.remaining;
+ const percent=total>0?Math.max(0,Math.min(100,used/total*100)):0;
  progress.style.width=percent.toFixed(1)+"%";
  label.textContent=percent.toFixed(0)+"% terpakai";
- note.textContent=formatBytes(used)+" digunakan · "+formatBytes(remain)+" tersisa";
+ note.textContent=formatBytes(used)+" digunakan · "+formatBytes(data.remaining)+" tersisa";
 }
+function renderTimer(){
+ if(!sessionState)return;
+ const elapsed=Math.max(0,Math.floor((Date.now()-lastSyncTime)/1000));
+ setText("session-uptime",duration(sessionState.uptime+elapsed));
+ if(!sessionState.limit){
+   setText("session-time-left","Tidak dibatasi");
+ }else if(sessionState.left!==null){
+   const remaining=Math.max(0,sessionState.left-elapsed);
+   setText("session-time-left",duration(remaining));
+   if(remaining===0)refreshNote("Waktu sesi mencapai 0. Memeriksa status koneksi…","warning");
+ }else{
+   setText("session-time-left",sessionState.leftText||"Tidak tersedia");
+ }
+}
+function applySnapshot(snapshot){
+ if(!snapshot)return;
+ sessionState=snapshot;
+ lastSyncTime=Date.now();
+ renderTimer();
+ renderTraffic(snapshot);
+}
+function expiredSession(){
+ refreshNote("Sesi HotSpot telah berakhir. Silakan login kembali.","error");
+ const badge=document.getElementById("session-status-badge");
+ if(badge){badge.textContent="OFFLINE";badge.classList.add("is-offline");}
+ document.getElementById("session-relogin")?.classList.remove("hidden");
+ sessionState=null;
+}
+async function refreshStatus(){
+ if(refreshing||document.visibilityState==="hidden"||!sessionState)return;
+ refreshing=true;
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),7000);
+ try{
+   const url=new URL(window.location.href);
+   url.searchParams.set("_refresh",String(Date.now()));
+   const response=await fetch(url.toString(),{
+     credentials:"same-origin",cache:"no-store",
+     redirect:"follow",signal:controller.signal,
+     headers:{"Accept":"text/html"}
+   });
+   if(!response.ok)throw Error("HTTP "+response.status);
+   if(new URL(response.url).origin!==location.origin)throw Error("Redirected away from hotspot");
+   const html=await response.text();
+   const doc=new DOMParser().parseFromString(html,"text/html");
+   const fresh=snapshotFrom(doc);
+   if(!fresh){
+     const path=new URL(response.url).pathname;
+     if(/(?:^|\\/)(?:login|logout|flogin)\\.html$/.test(path)){
+       expiredSession();
+     }else{
+       throw Error("RouterOS status unavailable");
+     }
+     return;
+   }
+   if(fresh.loggedIn==="no"){expiredSession();return;}
+   applySnapshot(fresh);
+   refreshNote("Data diperbarui otomatis setiap 10 detik · Terakhir "+new Date().toLocaleTimeString("id-ID"));
+ }catch(_){
+   refreshNote("Gagal memperbarui data. Angka trafik terakhir mungkin sudah berubah.","warning");
+ }finally{
+   clearTimeout(timeout);
+   refreshing=false;
+ }
+}
+function initUsage(){
+ const initial=snapshotFrom(document);
+ if(initial){
+   applySnapshot(initial);
+ }else{
+   // Legacy RouterOS installations without second-precision status markers.
+   renderTraffic({
+     inBytes:Number(statusData.bytesIn)||0,
+     outBytes:Number(statusData.bytesOut)||0,
+     inNice:"",outNice:"",
+     remaining:Number.isFinite(Number(statusData.remainBytesTotal))?Number(statusData.remainBytesTotal):null
+   });
+   refreshNote("Timer real-time tidak tersedia di versi RouterOS ini.","warning");
+   return;
+ }
+ refreshNote("Data akan diperbarui otomatis setiap 10 detik");
+ setInterval(renderTimer,1000);
+ setInterval(refreshStatus,REFRESH_MS);
+ document.addEventListener("visibilitychange",()=>{
+   if(!document.hidden)refreshStatus();
+ });
+}
+
 async function loadPackages(){
  const state=document.getElementById("package-state"),list=document.getElementById("package-list");if(!state||!list)return;
  try{
