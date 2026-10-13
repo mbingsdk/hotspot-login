@@ -70,3 +70,11 @@ Ubah `"enabled": true` untuk menampilkan pengumuman. Isi yang bisa disunting:
 - `autoCloseSeconds`: modal tertutup otomatis setelah 10 detik sejak muncul. Ubah angkanya bila perlu (0 untuk menonaktifkan auto-close, maksimum 120 detik). Ada hitung mundur kecil dan timer dibatalkan saat popup ditutup secara manual.
 
 Ubah `"enabled": false` untuk mematikan popup tanpa menyentuh HTML atau JS. Jika konfigurasi gagal dimuat, halaman login tetap normal tanpa popup. Pastikan `assets/announcement.json` ikut di-upload ke direktori HotSpot.
+
+## Live Status Monitoring
+
+On `status.html`, uptime runs every second and the remaining session time counts down when RouterOS provides `session-time-left-secs`. The initial values are read from the RouterOS-rendered status variables; the browser does not invent session data.
+
+Every **10 seconds**, the page fetches a fresh same-origin copy of the current Status URL (without a full-page reload), then updates download, upload, total traffic, remaining quota, uptime, and remaining session time. If the request fails, the last known traffic values remain visible with a warning. Polling pauses when the tab is hidden and resumes when it is visible again. If the router redirects to login or reports the user logged out, the page marks the session offline and offers a login link.
+
+The router must support `$(uptime-secs)` and `$(session-time-left-secs)` for accurate second-level counters. Test these fields on the deployed RouterOS build. Browsers cannot independently retrieve fresh traffic counters without querying RouterOS.
